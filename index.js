@@ -1,6 +1,6 @@
 let data;
 let chart;
-fetch('sample_data.json')
+fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
     .then((res) => res.json())
     .then(d => data = d)
     .then(() => {
