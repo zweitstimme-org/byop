@@ -71,7 +71,10 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             Math.round((votes["FDP"]/sizeSelector.value)*100),
                             Math.round((votes["LINKE"]/sizeSelector.value)*100),
                             Math.round((votes["sonstige"]/sizeSelector.value)*100)
-                        ], 
+                        ],
+                        marker: { // custom party colors
+                            color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff", "#c0c0c0"]
+                        },
                         error_y: { // error bars
                             type: 'data',
                             array: [
