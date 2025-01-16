@@ -11,13 +11,32 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         const redrawButton = document.getElementById("redraw");
         const resetButton = document.getElementById("reset");
 
+        /* SAMPLE TYPE */
+        const telephoneSample = document.getElementById("tel")
+        const socialMediaSample = document.getElementById("socialMedia")
+        const onlineSample = document.getElementById("online")
+
+        /* WEIGHTING */
         const ageCheckbox = document.getElementById("age");
         const sexCheckbox = document.getElementById("sex");
         const voteCheckbox = document.getElementById("vote");
 
         function drawSample() {
+            debugger;
+            shuffled = data.sort(() => 0.5 - Math.random());
+
+            const telephone = telephoneSample.checked;
+            const socialMedia = socialMediaSample.checked;
+            const online = onlineSample.checked;
+
+            let sample;
+            if (telephone) sample = shuffled.filter(i => i[5] === "1") 
+            if (socialMedia) sample = shuffled.filter(i => i[3] === "1")
+            if (online) sample = shuffled.filter(i => i[4] === "1")
+
             const sampleSize = sizeSelector.value;
-            return shuffled = data.sort(() => 0.5 - Math.random()).slice(0, sampleSize);
+            rawSample = sample.slice(0, sampleSize)
+            return rawSample;
         }
 
         function aggregateVotes(sample) {
@@ -117,7 +136,6 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
         function redraw() {
             const sample = drawSample();
-            rawSample = sample;
             const votes = aggregateVotes(rawSample);
             updateBarChart(votes);
         }
