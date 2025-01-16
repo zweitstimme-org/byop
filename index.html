@@ -3,18 +3,93 @@
 <head>
     <script src="https://cdn.plot.ly/plotly-3.0.0-rc.2.min.js"></script>
     <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
     <div id="holder" style="width: 500px; height: 350px;">
     </div>
-      
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script src="index.js"></script>      
+    <div id="controls" class="container">
+        <div id="left">
+            <fieldset>
+                <legend>Stichbprobengröße:</legend>
+            
+                <div>
+                  <input name="samplesize" type="radio" id="500" value="500" checked />
+                  <label for="500">500</label>
+                </div>
+              
+                <div>
+                    <input name="samplesize" type="radio" id="1000" value="1000" />
+                    <label for="1000">1.000</label>
+                  </div>
+              
+                  <div>
+                    <input name="samplesize" type="radio" id="10000" value="10000" />
+                    <label for="10000">10.000</label>
+                  </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Rekrutierungsmethode:</legend>
+            
+                <div>
+                  <input name="sampletype" type="radio" id="socialMedia" value="sm" checked />
+                  <label for="socialMedia">Social Media Werbung</label>
+                </div>
+              
+                <div>
+                    <input name="sampletype" type="radio" id="online" value="on" />
+                    <label for="online">Online über Marktforschungsinstitut</label>
+                  </div>
+              
+                  <div>
+                    <input name="sampletype" type="radio" id="tel" value="tel" />
+                    <label for="tel">Zufällige Stichprove via Telefon</label>
+                  </div>
+              </fieldset>
+        </div>
+        <div id="center">
+            <fieldset>
+                <legend>Gewichtung:</legend>
+                <div>
+                  <input type="checkbox" id="age" value="age"  />
+                  <label for="age">Alter</label>
+                </div>
+              
+                <div>
+                    <input type="checkbox" id="sex" value="sex" />
+                    <label for="sex">Geschlecht</label>
+                  </div>
+              
+                  <div>
+                    <input type="checkbox" id="vote" value="vote" />
+                    <label for="vote">Vergangenes Wahlverhalten</label>
+                  </div>
+              </fieldset>
+        </div>
+        <div id="right">
+            <div id="partyAdaption">
+                <select name="partyBias" id="partyBias">
+                    <option value="CDU/CSU">CDU/CSU</option>
+                    <option value="SPD">SPD</option>
+                    <option value="AfD">AfD</option>
+                    <option value="B90">Grüne</option>
+                    <option value="AfD">FDP</option>
+                    <option value="AfD">Linke</option>
+                </select>
+                <input type="range" id="partyAdaptionValue" name="partyAdaptionValue" min="-5" max="5" step="1" />
+                <label for="partyAdaptionValue">Anpassung des Wertes der ausgewählten Partei</label>
+            </div>
+        </div>
+    </div>
+    <label for="sampleSize">Stichprobengröße:</label>
     <select name="sampleSize" id="sampleSize">
         <option value="500">500</option>
         <option value="1000">1000</option>
         <option value="10000">10000</option>
     </select>
-    <button id="redraw">Redraw with Same Size</button>
+    <!-- Maybe do not have this? Is good for testing, but probably confusing in reality. -->
+    <button id="redraw">Neues Sample mit gleichen Einstellungen generieren</button>
+    <button id="reset">Einstellungen Zurücksetzen</button>
 </body>
