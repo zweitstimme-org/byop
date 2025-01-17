@@ -20,5 +20,6 @@ Inside `sample_data.json`, there are 100000 voters in an array. Each voter itsel
 - vote (2): "CDU/CSU", "SPD", "AfD", "FDP", "B90", "LINKE", or "sonstige
 - social_media (3): "true", "false", or null (synonymous with "false") 
 - online (4): "true", "false", or null (synonymous with "false") 
-- telephone (5): "true", "false", or null (synonymous with "false") 
+- telephone (5): "true", "false", or null (synonymous with "false")
+- final_vote (6): "CDU/CSU", "SPD", "AfD", "FDP", "B90", "LINKE", "sonstige, *or "BSW"*
 
