@@ -33,6 +33,10 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         const sexCheckbox = document.getElementById("sex");
         const voteCheckbox = document.getElementById("vote");
 
+        /* PARTY BIAS */
+        const partyChooser = document.getElementById("partyBias");
+        const biasSlider = document.getElementById("partyAdaptionValue");
+        
         function drawSample() {
             debugger;
             shuffled = data.sort(() => 0.5 - Math.random());
@@ -156,12 +160,33 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             updateBarChart(votes);
         }
 
+        function reset() {
+            fh_radio.checked = true;
+            onlineSample.checked = true;
+            ageCheckbox.checked = false;
+            sexCheckbox.checked = false;
+            voteCheckbox.checked = false;
+            partyChooser.value = "CDU/CSU";
+            biasSlider.value = 0;
+        }
 
-        sizeSelector.addEventListener("input", redraw);
+
+        fh_radio.addEventListener('click', redraw);
+        ot_radio.addEventListener('click', redraw);
+        th_radio.addEventListener('click', redraw);
+
+        telephoneSample.addEventListener('click', redraw);
+        socialMediaSample.addEventListener('click', redraw);
+        onlineSample.addEventListener('click', redraw);
+        
         redrawButton.addEventListener("click", redraw);
         resetButton.addEventListener("click", reset);
 
         ageCheckbox.addEventListener("change", updateWeights)
         sexCheckbox.addEventListener("change", updateWeights)
         voteCheckbox.addEventListener("change", updateWeights)
+
+        
+        // Trigger initial load
+        redraw();
     });
