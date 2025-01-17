@@ -7,9 +7,21 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
     .then(d => data = d)
     .then(() => {
 
-        const sizeSelector = document.getElementById('sampleSize');
         const redrawButton = document.getElementById("redraw");
         const resetButton = document.getElementById("reset");
+
+        /* SAMPLE SIZE */
+        const fh_radio = document.getElementById("500")
+        const ot_radio = document.getElementById("1000")
+        const th_radio = document.getElementById("10000")
+        
+        let SAMPLE_SIZE
+        function updateSampleSize() {
+            if (fh_radio.checked) SAMPLE_SIZE = 500;
+            if (ot_radio.checked) SAMPLE_SIZE = 1000;
+            if (th_radio.checked) SAMPLE_SIZE = 10000;
+        }
+        updateSampleSize();
 
         /* SAMPLE TYPE */
         const telephoneSample = document.getElementById("tel")
@@ -34,8 +46,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             if (socialMedia) sample = shuffled.filter(i => i[3] === "1")
             if (online) sample = shuffled.filter(i => i[4] === "1")
 
-            const sampleSize = sizeSelector.value;
-            rawSample = sample.slice(0, sampleSize)
+            rawSample = sample.slice(0, SAMPLE_SIZE)
             return rawSample;
         }
 
@@ -50,11 +61,10 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         }
 
         // https://www.media-analyse.at/Signifikanz
-        function errorTerm(absItem, sampleSize) {
+        function errorTerm(absItem) {
             absItem = Number(absItem);
-            sampleSize = Number(sampleSize);    
-            const percentItem = (absItem/sampleSize).toFixed(2);
-            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/sampleSize)
+            const percentItem = (absItem/SAMPLE_SIZE).toFixed(2);
+            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/SAMPLE_SIZE)
             return err*100; // conversion for correct display in plotly
         }
 
@@ -64,14 +74,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     {
                         x: ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"], // labels
                         y: [ // values,
-                            Math.round((votes["CDU/CSU"]/sizeSelector.value)*100),
-                            Math.round((votes["SPD"]/sizeSelector.value)*100),
-                            Math.round((votes["Afd"]/sizeSelector.value)*100),
-                            Math.round((votes["B90"]/sizeSelector.value)*100),
-                            Math.round((votes["FDP"]/sizeSelector.value)*100),
-                            Math.round((votes["LINKE"]/sizeSelector.value)*100),
-                            Math.round((votes["BSW"]/sizeSelector.value)*100),
-                            Math.round((votes["sonstige"]/sizeSelector.value)*100)
+                            Math.round((votes["CDU/CSU"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["SPD"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["Afd"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["B90"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["FDP"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["LINKE"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["BSW"]/SAMPLE_SIZE)*100),
+                            Math.round((votes["sonstige"]/SAMPLE_SIZE)*100)
                         ],
                         marker: { // custom party colors
                             color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff","#7b2450", "#c0c0c0"]
@@ -79,14 +89,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         error_y: { // error bars
                             type: 'data',
                             array: [
-                                errorTerm(votes["CDU/CSU"],sizeSelector.value),
-                                errorTerm(votes["SPD"],sizeSelector.value),
-                                errorTerm(votes["Afd"],sizeSelector.value),
-                                errorTerm(votes["B90"],sizeSelector.value),
-                                errorTerm(votes["FDP"],sizeSelector.value),
-                                errorTerm(votes["LINKE"],sizeSelector.value),
-                                errorTerm(votes["BSW"],sizeSelector.value),
-                                errorTerm(votes["sonstige"],sizeSelector.value)
+                                errorTerm(votes["CDU/CSU"],SAMPLE_SIZE),
+                                errorTerm(votes["SPD"],SAMPLE_SIZE),
+                                errorTerm(votes["Afd"],SAMPLE_SIZE),
+                                errorTerm(votes["B90"],SAMPLE_SIZE),
+                                errorTerm(votes["FDP"],SAMPLE_SIZE),
+                                errorTerm(votes["LINKE"],SAMPLE_SIZE),
+                                errorTerm(votes["BSW"],SAMPLE_SIZE),
+                                errorTerm(votes["sonstige"],SAMPLE_SIZE)
                             ],
                             visible: true
                           },
@@ -140,6 +150,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         }
 
         function redraw() {
+            updateSampleSize();
             const sample = drawSample();
             const votes = aggregateVotes(rawSample);
             updateBarChart(votes);
