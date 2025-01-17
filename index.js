@@ -85,7 +85,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         y: [ // values,
                             Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
                             Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["Afd"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["AfD"]/SAMPLE_SIZE)*100),
                             Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
                             Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
                             Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
@@ -100,7 +100,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             array: [
                                 errorTerm(biasedSample["CDU/CSU"], actualSampleSize),
                                 errorTerm(biasedSample["SPD"], actualSampleSize),
-                                errorTerm(biasedSample["Afd"], actualSampleSize),
+                                errorTerm(biasedSample["AfD"], actualSampleSize),
                                 errorTerm(biasedSample["B90"], actualSampleSize),
                                 errorTerm(biasedSample["FDP"], actualSampleSize),
                                 errorTerm(biasedSample["LINKE"], actualSampleSize),
@@ -118,7 +118,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         };
 
         function updateWeights() {
-            const parties = ["CDU/CSU", "SPD", "Afd", "B90", "FDP", "LINKE", "BSW", "sonstige"];
+            const parties = ["CDU/CSU", "SPD", "AfD", "B90", "FDP", "LINKE", "BSW", "sonstige"];
 
             const byAge = ageCheckbox.checked;
             const bySex = sexCheckbox.checked;
@@ -182,7 +182,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             const partyPercentages = {
                 "CDU/CSU": weighedSample["CDU/CSU"]/SAMPLE_SIZE,
                 "SPD": weighedSample["SPD"]/SAMPLE_SIZE,
-                "Afd": weighedSample["Afd"]/SAMPLE_SIZE,
+                "AfD": weighedSample["AfD"]/SAMPLE_SIZE,
                 "B90": weighedSample["B90"]/SAMPLE_SIZE,
                 "FDP": weighedSample["FDP"]/SAMPLE_SIZE,
                 "LINKE": weighedSample["LINKE"]/SAMPLE_SIZE,
