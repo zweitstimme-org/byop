@@ -40,7 +40,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         }
 
         function aggregateVotes(sample) {
-            const votes = sample.map(item => item[2]);
+            const votes = sample.map(item => item[6]);
             const votesByParty = votes.reduce((acc, vote) => {
                 if (acc[vote]) acc[vote] += 1;
                 else acc[vote] = 1;
@@ -62,7 +62,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             Plotly.newPlot("holder", // elem
                 [
                     {
-                        x: ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "Sonstige"], // labels
+                        x: ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"], // labels
                         y: [ // values,
                             Math.round((votes["CDU/CSU"]/sizeSelector.value)*100),
                             Math.round((votes["SPD"]/sizeSelector.value)*100),
@@ -70,10 +70,11 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             Math.round((votes["B90"]/sizeSelector.value)*100),
                             Math.round((votes["FDP"]/sizeSelector.value)*100),
                             Math.round((votes["LINKE"]/sizeSelector.value)*100),
+                            Math.round((votes["BSW"]/sizeSelector.value)*100),
                             Math.round((votes["sonstige"]/sizeSelector.value)*100)
                         ],
                         marker: { // custom party colors
-                            color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff", "#c0c0c0"]
+                            color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff","#7b2450", "#c0c0c0"]
                         },
                         error_y: { // error bars
                             type: 'data',
@@ -84,6 +85,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                                 errorTerm(votes["B90"],sizeSelector.value),
                                 errorTerm(votes["FDP"],sizeSelector.value),
                                 errorTerm(votes["LINKE"],sizeSelector.value),
+                                errorTerm(votes["BSW"],sizeSelector.value),
                                 errorTerm(votes["sonstige"],sizeSelector.value)
                             ],
                             visible: true
@@ -98,7 +100,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
         function updateWeights() {
             debugger;
-            const parties = ["CDU/CSU", "SPD", "Afd", "B90", "FDP", "LINKE", "sonstige"];
+            const parties = ["CDU/CSU", "SPD", "Afd", "B90", "FDP", "LINKE", "BSW", "sonstige"];
 
             const byAge = ageCheckbox.checked;
             const bySex = sexCheckbox.checked;
@@ -116,7 +118,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             const menWeightingFactor = menShareGoal/menShareActual;
 
             let votesByGender = rawSample.reduce((acc, item) => {
-                const vote = item[2];
+                const vote = item[6];
                 const sex = item[1];
                 if (acc[vote]){
                     if (acc[vote][sex]) acc[vote][sex] += 1;
