@@ -12,18 +12,16 @@
     <div id="controls" class="container">
         <div id="left">
             <fieldset>
-                <legend>Stichbprobengröße:</legend>
+                <legend>Stichprobengröße:</legend>
             
                 <div>
                   <input name="samplesize" type="radio" id="500" value="500" checked />
                   <label for="500">500</label>
                 </div>
-              
                 <div>
                     <input name="samplesize" type="radio" id="1000" value="1000" />
                     <label for="1000">1.000</label>
                   </div>
-              
                   <div>
                     <input name="samplesize" type="radio" id="10000" value="10000" />
                     <label for="10000">10.000</label>
@@ -83,12 +81,6 @@
             </div>
         </div>
     </div>
-    <label for="sampleSize">Stichprobengröße:</label>
-    <select name="sampleSize" id="sampleSize">
-        <option value="500">500</option>
-        <option value="1000">1000</option>
-        <option value="10000">10000</option>
-    </select>
     <!-- Maybe do not have this? Is good for testing, but probably confusing in reality. -->
     <button id="redraw">Neues Sample mit gleichen Einstellungen generieren</button>
     <button id="reset">Einstellungen Zurücksetzen</button>
