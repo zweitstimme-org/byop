@@ -2,11 +2,25 @@ let data;
 let rawSample = [];
 let weighedSample = {};
 let biasedSample = {};
+// TODO: How does that play with a restart of the experiment?
+// TODO: use embedded_data to store this upon unload
+window.byop_interactions = {
+    size_changed: 0,
+    type_changed: 0,
+    weighting_changed: 0,
+    biased_party_changed: 0,
+    party_bias_changed: 0,
+    sample_changed: 0,
+    reset: 0
+}
 
 /* HELPER FUNCTIONS */
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
 const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
 
+// TODO: Exchange this for productive link!
+// Dev Link: https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json
+// Prod Link: https://rawcdn.githack.com/zweitstimme-org/byop/<COMMIT HASH>/sample_data.json
 fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
     .then((res) => res.json())
     .then(d => data = d)
@@ -373,7 +387,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             updateWeights(true); // triggers the whole pipeline
         }
 
-
+        /* USER CONTROL FLOW */
         fh_radio.addEventListener('click', redraw);
         ot_radio.addEventListener('click', redraw);
         th_radio.addEventListener('click', redraw);
@@ -391,7 +405,38 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
         biasSlider.addEventListener('input', adaptForParty);
         partyChooser.addEventListener('change', resetBias);
-        
+
+        /* INTERACTION LOGGING */
+        function recordInteraction (elem) {
+            if (elem.srcElement == fh_radio) window.byop_interactions.size_changed += 1;
+            if (elem.srcElement == ot_radio) window.byop_interactions.size_changed += 1;
+            if (elem.srcElement == th_radio) window.byop_interactions.size_changed += 1;
+            if (elem.srcElement == telephoneSample) window.byop_interactions.type_changed += 1;
+            if (elem.srcElement == socialMediaSample) window.byop_interactions.type_changed += 1;
+            if (elem.srcElement == onlineSample) window.byop_interactions.type_changed += 1;
+            if (elem.srcElement == redrawButton) window.byop_interactions.sample_changed += 1;
+            if (elem.srcElement == resetButton) window.byop_interactions.reset += 1;
+            if (elem.srcElement == demographicsCheckbox) window.byop_interactions.weighting_changed += 1;
+            if (elem.srcElement == voteCheckbox) window.byop_interactions.weighting_changed += 1;
+            if (elem.srcElement == noneCheckbox) window.byop_interactions.weighting_changed += 1;
+            if (elem.srcElement == biasSlider) window.byop_interactions.party_bias_changed += 1;
+            if (elem.srcElement = partyChooser)window.byop_interactions.biased_party_changed += 1;
+        }
+
+        fh_radio.addEventListener('click', recordInteraction);
+        ot_radio.addEventListener('click', recordInteraction);
+        th_radio.addEventListener('click', recordInteraction);
+        telephoneSample.addEventListener('click', recordInteraction);
+        socialMediaSample.addEventListener('click', recordInteraction);
+        onlineSample.addEventListener('click', recordInteraction);
+        redrawButton.addEventListener("click", recordInteraction);
+        resetButton.addEventListener("click", recordInteraction);
+        demographicsCheckbox.addEventListener("click", recordInteraction);
+        voteCheckbox.addEventListener("click", recordInteraction);
+        noneCheckbox.addEventListener("click", recordInteraction);
+        biasSlider.addEventListener('change', recordInteraction);
+        partyChooser.addEventListener('change', recordInteraction);
+
         // Trigger initial load
         redraw();
     });
