@@ -1,7 +1,11 @@
 let data;
-let sample;
-let rawSample;
-let currentWeights;
+let rawSample = [];
+let weighedSample = {};
+let biasedSample = {};
+
+// FIXME: only for debugging
+const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
+
 fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
     .then((res) => res.json())
     .then(d => data = d)
@@ -37,8 +41,18 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         const partyChooser = document.getElementById("partyBias");
         const biasSlider = document.getElementById("partyAdaptionValue");
         
+
+        /**
+         * Draws a new sample from the data.
+         * Respects the currently selected sample type.
+         */
         function drawSample() {
-            debugger;
+            rawSample = [];
+            weighedSample = {};
+            biasedSample = {};
+
+            updateSampleSize();
+            
             shuffled = data.sort(() => 0.5 - Math.random());
 
             const telephone = telephoneSample.checked;
@@ -50,42 +64,33 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             if (socialMedia) sample = shuffled.filter(i => i[3] === "1")
             if (online) sample = shuffled.filter(i => i[4] === "1")
 
-            rawSample = sample.slice(0, SAMPLE_SIZE)
-            return rawSample;
-        }
-
-        function aggregateVotes(sample) {
-            const votes = sample.map(item => item[6]);
-            const votesByParty = votes.reduce((acc, vote) => {
-                if (acc[vote]) acc[vote] += 1;
-                else acc[vote] = 1;
-                return acc;
-            }, {})
-            return votesByParty;
+            rawSample = sample.slice(0, SAMPLE_SIZE);
         }
 
         // https://www.media-analyse.at/Signifikanz
-        function errorTerm(absItem) {
+        function errorTerm(absItem, sample_size) {
             absItem = Number(absItem);
-            const percentItem = (absItem/SAMPLE_SIZE).toFixed(2);
-            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/SAMPLE_SIZE)
+            const percentItem = (absItem/sample_size).toFixed(2);
+            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/sample_size)
             return err*100; // conversion for correct display in plotly
         }
 
-        function updateBarChart(votes) {
+        function updateBarChart() {
+            const actualSampleSize = SAMPLE_SIZE;
+            SAMPLE_SIZE = sumValues(biasedSample)
             Plotly.newPlot("holder", // elem
                 [
                     {
                         x: ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"], // labels
                         y: [ // values,
-                            Math.round((votes["CDU/CSU"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["SPD"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["Afd"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["B90"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["FDP"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["LINKE"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["BSW"]/SAMPLE_SIZE)*100),
-                            Math.round((votes["sonstige"]/SAMPLE_SIZE)*100)
+                            Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["Afd"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
+                            Math.round((biasedSample["sonstige"]/SAMPLE_SIZE)*100)
                         ],
                         marker: { // custom party colors
                             color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff","#7b2450", "#c0c0c0"]
@@ -93,14 +98,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         error_y: { // error bars
                             type: 'data',
                             array: [
-                                errorTerm(votes["CDU/CSU"],SAMPLE_SIZE),
-                                errorTerm(votes["SPD"],SAMPLE_SIZE),
-                                errorTerm(votes["Afd"],SAMPLE_SIZE),
-                                errorTerm(votes["B90"],SAMPLE_SIZE),
-                                errorTerm(votes["FDP"],SAMPLE_SIZE),
-                                errorTerm(votes["LINKE"],SAMPLE_SIZE),
-                                errorTerm(votes["BSW"],SAMPLE_SIZE),
-                                errorTerm(votes["sonstige"],SAMPLE_SIZE)
+                                errorTerm(biasedSample["CDU/CSU"], actualSampleSize),
+                                errorTerm(biasedSample["SPD"], actualSampleSize),
+                                errorTerm(biasedSample["Afd"], actualSampleSize),
+                                errorTerm(biasedSample["B90"], actualSampleSize),
+                                errorTerm(biasedSample["FDP"], actualSampleSize),
+                                errorTerm(biasedSample["LINKE"], actualSampleSize),
+                                errorTerm(biasedSample["BSW"], actualSampleSize),
+                                errorTerm(biasedSample["sonstige"], actualSampleSize)
                             ],
                             visible: true
                           },
@@ -109,18 +114,27 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 ], // data
                 { "width": 500, "height": 350}, // layout
                 {displayModeBar: false}) // config
-        
+            SAMPLE_SIZE = actualSampleSize;
         };
 
         function updateWeights() {
-            debugger;
             const parties = ["CDU/CSU", "SPD", "Afd", "B90", "FDP", "LINKE", "BSW", "sonstige"];
 
             const byAge = ageCheckbox.checked;
             const bySex = sexCheckbox.checked;
             const byPastVote = voteCheckbox.checked;
 
-            if (!byAge && !bySex && !byPastVote) return updateBarChart(aggregateVotes(rawSample));
+            if (!byAge && !bySex && !byPastVote) {
+                const votes = rawSample.map(item => item[6]);
+                const votesByParty = votes.reduce((acc, vote) => {
+                    if (acc[vote]) acc[vote] += 1;
+                    else acc[vote] = 1;
+                    return acc;
+                }, {})
+                weighedSample = { ...votesByParty };
+                adaptForParty();
+                return;
+            };
 
             const womenShareGoal = 0.52;
             const menShareGoal = 1-womenShareGoal;
@@ -150,14 +164,56 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 votes[party] = Math.round(votesByGender[party]["m"] * menWeightingFactor + votesByGender[party]["f"] * womenWeightingFactor);
             }
 
-            updateBarChart(votes);
+            weighedSample = { ...votes };
+            adaptForParty();
         }
 
+        function adaptForParty () {
+            const party = partyChooser.value;
+            const effectSize = Number(biasSlider.value);
+            
+            // Do nothing if we do not introduce bias
+            if (effectSize == 0) {
+                biasedSample = { ...weighedSample };
+                updateBarChart();
+                return;
+            };
+
+            const partyPercentages = {
+                "CDU/CSU": weighedSample["CDU/CSU"]/SAMPLE_SIZE,
+                "SPD": weighedSample["SPD"]/SAMPLE_SIZE,
+                "Afd": weighedSample["Afd"]/SAMPLE_SIZE,
+                "B90": weighedSample["B90"]/SAMPLE_SIZE,
+                "FDP": weighedSample["FDP"]/SAMPLE_SIZE,
+                "LINKE": weighedSample["LINKE"]/SAMPLE_SIZE,
+                "BSW": weighedSample["BSW"]/SAMPLE_SIZE,
+                "sonstige": weighedSample["sonstige"]/SAMPLE_SIZE
+            }
+
+            const percentagePoint = Math.round(SAMPLE_SIZE/100);
+            const offset = effectSize*percentagePoint; 
+            biasedSample[party] = weighedSample[party] + effectSize*percentagePoint;
+            for (p in weighedSample){
+                if (p == party) continue;
+                else {
+                    biasedSample[p] = ((offset*-1)*partyPercentages[p]) + weighedSample[p];
+                    biasedSample[p] = Math.round(biasedSample[p]);
+                }
+            }
+            updateBarChart();
+        }
+
+        function resetBias() {
+            biasSlider.value = 0;
+            adaptForParty();               
+        }
+
+        /**
+         * Description
+         */
         function redraw() {
-            updateSampleSize();
-            const sample = drawSample();
-            const votes = aggregateVotes(rawSample);
-            updateBarChart(votes);
+            drawSample();
+            updateWeights(); // triggers the whole pipeline
         }
 
         function reset() {
@@ -186,6 +242,8 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         sexCheckbox.addEventListener("change", updateWeights)
         voteCheckbox.addEventListener("change", updateWeights)
 
+        biasSlider.addEventListener('input', adaptForParty);
+        partyChooser.addEventListener('change', resetBias);
         
         // Trigger initial load
         redraw();
