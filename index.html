@@ -73,12 +73,30 @@
                     <option value="SPD">SPD</option>
                     <option value="AfD">AfD</option>
                     <option value="B90">Grüne</option>
-                    <option value="AfD">FDP</option>
-                    <option value="AfD">Linke</option>
+                    <option value="FDP">FDP</option>
+                    <option value="LINKE">Linke</option>
+                    <option value="BSW">BSW</option>
+                    <option value="sonstige">sonstige</option>
                 </select>
-                <input type="range" id="partyAdaptionValue" name="partyAdaptionValue" min="-5" max="5" step="1" />
-                <label for="partyAdaptionValue">Anpassung des Wertes der ausgewählten Partei</label>
-            </div>
+                <!-- https://stackoverflow.com/questions/61204680/html-range-slider-with-labels-every-5 -->
+                <div>
+                <input type="range" id="partyAdaptionValue" name="partyAdaptionValue" min="-5" max="5" step="1" list="tickmarks"/>
+                <datalist id="tickmarks">
+                  <option value="-5" label="-5"></option>
+                  <option value="-4"></option>
+                  <option value="-3"></option>
+                  <option value="-2"></option>
+                  <option value="-1"></option>
+                  <option value="0" label="0"></option>
+                  <option value="1"></option>
+                  <option value="2"></option>
+                  <option value="3"></option>
+                  <option value="4"></option>
+                  <option value="5" label="+5"></option>
+                </datalist>
+              </div>
+              <label for="partyAdaptionValue">Anpassung des Wertes der ausgewählten Partei</label>
+              </div>
         </div>
     </div>
     <!-- Maybe do not have this? Is good for testing, but probably confusing in reality. -->

@@ -15,4 +15,22 @@
     margin: 0 10px;
     flex: 1;
   }
-  
+
+input[type="range"] {
+    width: 100%; /* Make the slider take the full width of the container */
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between; /* Distribute the labels evenly */
+    width: 100%; /* Match the slider width */
+    margin-top: 5px; /* Adjust spacing between slider and labels */
+    color: black;
+    font-family: monospace; /* Monospaced font for consistent character width */
+    font-size: 14px;
+}
+
+datalist option {
+    display: block; /* Makes it easier to control layout */
+    text-align: center; /* Center the text */
+}
