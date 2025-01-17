@@ -224,6 +224,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             voteCheckbox.checked = false;
             partyChooser.value = "CDU/CSU";
             biasSlider.value = 0;
+            updateWeights(); // triggers the whole pipeline
         }
 
 
