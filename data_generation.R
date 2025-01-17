@@ -40,7 +40,7 @@ electorate_sample_age[female] <- sample(
 # Past Vote (given age and sex) -------------------------------------------
 
 # page 107
-PAST_VOTE_OPTIONS <- c("CDU/CSU", "SPD", "Afd", "FDP", "LINKE", "B90", "sonstige")
+PAST_VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "FDP", "LINKE", "B90", "sonstige")
 electorate_sample_vote <- rep(NA, TOTAL_SAMPLE_SIZE)
 
 male_18 <- which(electorate_sample_sex == "m" & electorate_sample_age == "18")
@@ -143,7 +143,7 @@ electorate_sample_vote[female_70] <- sample(
 
 # Vote Preference Modelling -----------------------------------------------
 
-VOTE_OPTIONS <- c("CDU/CSU", "SPD", "Afd", "B90", "LINKE","FDP", "sonstige", "BSW")
+VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "B90", "LINKE","FDP", "sonstige", "BSW")
 
 # https://www.tagesschau.de/wahl/archiv/2024-06-09-EP-DE/analyse-wanderung.shtml
 # https://www.bundeswahlleiterin.de/europawahlen/2024/ergebnisse/bund-99.html#stimmen-prozente8
@@ -182,7 +182,7 @@ data <- data %>%
   mutate(
     CDU_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "CDU/CSU"]),
     SPD_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "SPD"]),
-    AfD_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "Afd"]),
+    AfD_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "AfD"]),
     B90_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "B90"]),
     LINKE_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "LINKE"]),
     FDP_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "FDP"]),
@@ -206,7 +206,7 @@ data$predicted_probs <- predict(model, newdata = data, type = "probs")
 # Currently: Forschungsgruppe Wahle 07.-09.01 
 desired_shares <- c("CDU/CSU" = 0.3,
                     "SPD" = 0.14,
-                    "Afd" = 0.21,
+                    "AfD" = 0.21,
                     "B90" = 0.15,
                     "LINKE" = 0.04,
                     "FDP" = 0.04,
@@ -228,7 +228,7 @@ adjusted_probs <- function(probs, desired_shares) {
 data$adjusted_probs <- adjusted_probs(as.matrix(data$predicted_probs), desired_shares)
 
 # Careful here: We need to sample from party names in alphabetical order!
-party_model_order <- c("Afd","B90","BSW","CDU/CSU",'FDP','LINKE','sonstige','SPD')
+party_model_order <- c("AfD","B90","BSW","CDU/CSU",'FDP','LINKE','sonstige','SPD')
 data$final_vote <- apply(data$predicted_probs, 1, function(row) {
   sample(party_model_order, size = 1, prob = row)
   })
@@ -252,7 +252,7 @@ electorate_sample_social_media[older] <- sample(
   prob = c(1/3,2/3)
 )
 # 3/4 of afd
-afd <- which(electorate_sample_vote == "Afd")
+afd <- which(electorate_sample_vote == "AfD")
 electorate_sample_social_media[afd] <- sample(
   c("1", "0"), 
   size = length(afd), 
