@@ -118,7 +118,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         };
 
         function updateWeights() {
-            const parties = ["CDU/CSU", "SPD", "AfD", "B90", "FDP", "LINKE", "BSW", "sonstige"];
+            const parties = ["CDU/CSU", "SPD", "AfD", "B90", "FDP", "LINKE", "BSW", "Sonstige"];
 
             const byAge = ageCheckbox.checked;
             const bySex = sexCheckbox.checked;
@@ -187,7 +187,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 "FDP": weighedSample["FDP"]/SAMPLE_SIZE,
                 "LINKE": weighedSample["LINKE"]/SAMPLE_SIZE,
                 "BSW": weighedSample["BSW"]/SAMPLE_SIZE,
-                "sonstige": weighedSample["sonstige"]/SAMPLE_SIZE
+                "Sonstige": weighedSample["Sonstige"]/SAMPLE_SIZE
             }
 
             const percentagePoint = Math.round(SAMPLE_SIZE/100);
