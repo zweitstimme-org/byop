@@ -78,42 +78,82 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         function updateBarChart() {
             const actualSampleSize = SAMPLE_SIZE;
             SAMPLE_SIZE = sumValues(biasedSample)
+            const yValues = [
+                Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["AfD"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["Sonstige"]/SAMPLE_SIZE)*100)
+            ];
+
+            const errorTerms = [
+                errorTerm(biasedSample["CDU/CSU"], actualSampleSize),
+                errorTerm(biasedSample["SPD"], actualSampleSize),
+                errorTerm(biasedSample["AfD"], actualSampleSize),
+                errorTerm(biasedSample["B90"], actualSampleSize),
+                errorTerm(biasedSample["FDP"], actualSampleSize),
+                errorTerm(biasedSample["LINKE"], actualSampleSize),
+                errorTerm(biasedSample["BSW"], actualSampleSize),
+                errorTerm(biasedSample["Sonstige"], actualSampleSize)
+            ]
+
+            texts = [
+                Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["AfD"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
+                Math.round((biasedSample["Sonstige"]/SAMPLE_SIZE)*100)
+            ].map(n => n.toFixed(1));
+
+            const xValues = ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"];
+
+            const annotations = []
+            textHeight = 35;
+            for (let i = 0; i < 8; i++) {
+                annotations.push(
+                    {
+                        x: xValues[i],
+                        y: yValues[i] + errorTerms[i] + 2,
+                        xref: 'x',
+                        yref: 'y',
+                        text: texts[i],
+                        align: 'center',
+                        showarrow: false
+                    }
+                )
+            }
+
             Plotly.newPlot("holder", // elem
                 [
                     {
-                        x: ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"], // labels
-                        y: [ // values,
-                            Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["AfD"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
-                            Math.round((biasedSample["sonstige"]/SAMPLE_SIZE)*100)
-                        ],
+                        x: xValues, // labels
+                        y: yValues,
                         marker: { // custom party colors
                             color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff","#7b2450", "#c0c0c0"]
                         },
                         error_y: { // error bars
                             type: 'data',
-                            array: [
-                                errorTerm(biasedSample["CDU/CSU"], actualSampleSize),
-                                errorTerm(biasedSample["SPD"], actualSampleSize),
-                                errorTerm(biasedSample["AfD"], actualSampleSize),
-                                errorTerm(biasedSample["B90"], actualSampleSize),
-                                errorTerm(biasedSample["FDP"], actualSampleSize),
-                                errorTerm(biasedSample["LINKE"], actualSampleSize),
-                                errorTerm(biasedSample["BSW"], actualSampleSize),
-                                errorTerm(biasedSample["sonstige"], actualSampleSize)
-                            ],
+                            array: errorTerms,
                             visible: true
                           },
-                        type: "bar"
+                        type: "bar",
                     }
                 ], // data
-                { "width": 500, "height": 350, yaxis: {range: [0, 40]}}, // layout
-                {displayModeBar: false}) // config
+                {
+                    "width": 500,
+                    "height": 350,
+                    yaxis: {range: [0, 40]},
+                    annotations: annotations,
+                }, // layout
+                { displayModeBar: false } // config
+            )
+                    
             SAMPLE_SIZE = actualSampleSize;
         };
 
