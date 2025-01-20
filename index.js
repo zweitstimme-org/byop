@@ -112,7 +112,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         type: "bar"
                     }
                 ], // data
-                { "width": 500, "height": 350}, // layout
+                { "width": 500, "height": 350, yaxis: {range: [0, 40]}}, // layout
                 {displayModeBar: false}) // config
             SAMPLE_SIZE = actualSampleSize;
         };
