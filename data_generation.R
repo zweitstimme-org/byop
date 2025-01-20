@@ -147,15 +147,14 @@ VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "B90", "LINKE","FDP", "sonstige", "BS
 
 # https://www.tagesschau.de/wahl/archiv/2024-06-09-EP-DE/analyse-wanderung.shtml
 # https://www.bundeswahlleiterin.de/europawahlen/2024/ergebnisse/bund-99.html#stimmen-prozente8
-# FIXME
 transition_matrix <- matrix(
-  c(0.89, 0, 0.11*0.69, 0,0,0,0, 0.11*0.31,   # From CDU
-    0.4*0.51, 0.6, 0.4*0.2, 0.4*0.03,0,0.4*0.04,0, 0.4*0.2,   # From SPD
-    0, 0, 0.99, 0,0,0,0, 0.01,   # From AfD
-    0.45*0.67, 0, 0.45*0.06, 0.55,0.45*0.05,0.45*0.04,0, 0.45*0.18,     # From B90
-    0.03, 0, 0.125, 0,0.5,0,0, 0.345,     # From LINKE
-    0, 0, 0.25, 0,0,0.62,0, 0.13,     # From FDP
-    0, 0, 0.3, 0,0,0,0.7,0,     # From sonstige
+  c(0.89, 0.01, 0.06*0.69, 0.005,0.005,0.01,0.01, 0.07*0.31,   # From CDU
+    0.27, 0.55, 0.45*0.2, 0.45*0.20,0,0.45*0.04,0, 0,   # From SPD
+    0.01, 0.01, 0.94, 0.01,0.01,0.01,0.01, 0,   # From AfD
+    0.38*0.67, 0.01, 0.38*0.06, 0.60,0.38*0.05,0.38*0.04,0.01, 0.38*0.18,     # From B90
+    0.02, 0.01, 0.125, 0.01,0.73,0,0, 0.1,     # From LINKE
+    0, 0, 0.25, 0.3,0,0.32,0, 0.13,     # From FDP
+    0, 0, 0.2, 0,0,0,0.7,0.1,     # From sonstige
     0, 0, 0, 0,0,0,0, 0),  # From BSW (INVALID)
   nrow = 8, byrow = TRUE
 )
