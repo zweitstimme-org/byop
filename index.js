@@ -3,8 +3,9 @@ let rawSample = [];
 let weighedSample = {};
 let biasedSample = {};
 
-// FIXME: only for debugging
+/* HELPER FUNCTIONS */
 const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
+const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
 
 fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
     .then((res) => res.json())
@@ -129,13 +130,43 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 )
             }
 
+            // DAWUM Wahltrend
+            const pollingAverage = [30.2, 16, 20.3, 13.8, 4.2, 3.5, 5.2, 6.8];
+
             Plotly.newPlot("holder", // elem
                 [
-                    {
+                    { /* BACKGROUND BARS */
+                        x: xValues, // labels
+                        y: pollingAverage,
+                        marker: { // custom party colors
+                            color: [
+                                setOpacity("#000000", 0.6),
+                                setOpacity("#ff0000", 0.6),
+                                setOpacity("#0000ff", 0.6),
+                                setOpacity("#008000", 0.6),
+                                setOpacity("#ffff00", 0.6),
+                                setOpacity("#ff00ff", 0.6),
+                                setOpacity("#7b2450", 0.6),
+                                setOpacity("#c0c0c0", 0.6),
+                            ]
+                        },
+                        type: "bar",
+                        width: 0.9
+                    },
+                    { /* MAIN BARS */
                         x: xValues, // labels
                         y: yValues,
                         marker: { // custom party colors
-                            color: ["#000000", "#ff0000", "#0000ff", "#008000", "#ffff00", "#ff00ff","#7b2450", "#c0c0c0"]
+                            color: [
+                                "#000000",
+                                "#ff0000",
+                                "#0000ff",
+                                "#008000",
+                                "#ffff00",
+                                "#ff00ff",
+                                "#7b2450",
+                                "#c0c0c0"
+                            ]
                         },
                         error_y: { // error bars
                             type: 'data',
@@ -143,15 +174,21 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             visible: true
                           },
                         type: "bar",
-                    }
+                        width: 0.7
+                    }                    
                 ], // data
                 {
                     "width": 500,
                     "height": 350,
+                    showlegend: false,
+                    barmode: 'overlay',
                     yaxis: {range: [0, 40]},
                     annotations: annotations,
+                    dragmode: false
                 }, // layout
-                { displayModeBar: false } // config
+                {
+                    displayModeBar: false,
+                } // config
             )
                     
             SAMPLE_SIZE = actualSampleSize;
