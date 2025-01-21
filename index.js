@@ -604,18 +604,20 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 return;
             };
 
+            weighed_sample_size = sumValues(weighedSample);
+
             const partyPercentages = {
-                "CDU/CSU": weighedSample["CDU/CSU"]/SAMPLE_SIZE,
-                "SPD": weighedSample["SPD"]/SAMPLE_SIZE,
-                "AfD": weighedSample["AfD"]/SAMPLE_SIZE,
-                "B90": weighedSample["B90"]/SAMPLE_SIZE,
-                "FDP": weighedSample["FDP"]/SAMPLE_SIZE,
-                "LINKE": weighedSample["LINKE"]/SAMPLE_SIZE,
-                "BSW": weighedSample["BSW"]/SAMPLE_SIZE,
-                "Sonstige": weighedSample["Sonstige"]/SAMPLE_SIZE
+                "CDU/CSU": weighedSample["CDU/CSU"]/weighed_sample_size,
+                "SPD": weighedSample["SPD"]/weighed_sample_size,
+                "AfD": weighedSample["AfD"]/weighed_sample_size,
+                "B90": weighedSample["B90"]/weighed_sample_size,
+                "FDP": weighedSample["FDP"]/weighed_sample_size,
+                "LINKE": weighedSample["LINKE"]/weighed_sample_size,
+                "BSW": weighedSample["BSW"]/weighed_sample_size,
+                "Sonstige": weighedSample["Sonstige"]/weighed_sample_size
             }
 
-            const percentagePoint = Math.round(SAMPLE_SIZE/100);
+            const percentagePoint = Math.round(weighed_sample_size/100);
             const offset = effectSize*percentagePoint; 
             biasedSample[party] = weighedSample[party] + effectSize*percentagePoint;
             for (p in weighedSample){
