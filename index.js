@@ -34,8 +34,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         const onlineSample = document.getElementById("online")
 
         /* WEIGHTING */
-        const ageCheckbox = document.getElementById("age");
-        const sexCheckbox = document.getElementById("sex");
+        const demographicsCheckbox = document.getElementById("demographics");
         const voteCheckbox = document.getElementById("vote");
         const noneCheckbox = document.getElementById("none");
 
@@ -198,22 +197,20 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         function updateWeights(elem) {
             if (elem.srcElement == noneCheckbox) {
                 if (noneCheckbox.checked) {
-                    ageCheckbox.checked = false;
-                    sexCheckbox.checked = false;
+                    demographicsCheckbox.checked = false;
                     voteCheckbox.checked = false;
                 }
             }
 
-            const byAge = ageCheckbox.checked;
-            const bySex = sexCheckbox.checked;
+            const byDemographics = demographicsCheckbox.checked;
             const byPastVote = voteCheckbox.checked;
 
-            if (byAge || bySex || byPastVote ) noneCheckbox.checked = false;
+            if (byDemographics || byPastVote ) noneCheckbox.checked = false;
             else noneCheckbox.checked = true;
 
             const parties = ["CDU/CSU", "SPD", "AfD", "B90", "FDP", "LINKE", "BSW", "Sonstige"];
 
-            if (!byAge && !bySex && !byPastVote) {
+            if (!byDemographics && !byPastVote) {
                 const votes = rawSample.map(item => item[6]);
                 const votesByParty = votes.reduce((acc, vote) => {
                     if (acc[vote]) acc[vote] += 1;
@@ -308,8 +305,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         function reset() {
             fh_radio.checked = true;
             onlineSample.checked = true;
-            ageCheckbox.checked = false;
-            sexCheckbox.checked = false;
+            demographicsCheckbox.checked = false;
             voteCheckbox.checked = false;
             noneCheckbox.checked = true;
             partyChooser.value = "CDU/CSU";
@@ -329,8 +325,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         redrawButton.addEventListener("click", redraw);
         resetButton.addEventListener("click", reset);
 
-        ageCheckbox.addEventListener("change", updateWeights);
-        sexCheckbox.addEventListener("change", updateWeights);
+        demographicsCheckbox.addEventListener("change", updateWeights);
         voteCheckbox.addEventListener("change", updateWeights);
         noneCheckbox.addEventListener("change", updateWeights);
 
