@@ -108,15 +108,15 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             })
 
             texts = [
-                Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["AfD"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["B90"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["FDP"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["LINKE"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
-                Math.round((biasedSample["Sonstige"]/SAMPLE_SIZE)*100)
-            ].map(n => n.toFixed(1));
+                (biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100,
+                (biasedSample["SPD"]/SAMPLE_SIZE)*100,
+                (biasedSample["AfD"]/SAMPLE_SIZE)*100,
+                (biasedSample["B90"]/SAMPLE_SIZE)*100,
+                (biasedSample["FDP"]/SAMPLE_SIZE)*100,
+                (biasedSample["LINKE"]/SAMPLE_SIZE)*100,
+                (biasedSample["BSW"]/SAMPLE_SIZE)*100,
+                (biasedSample["Sonstige"]/SAMPLE_SIZE)*100
+            ].map(n => `${n.toFixed(1)}%`);
 
             const xValues = ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"];
 
