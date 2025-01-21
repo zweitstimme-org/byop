@@ -6,14 +6,17 @@ let drawnSamples = {};
 let sampleWeights = null;
 // TODO: How does that play with a restart of the experiment?
 // TODO: use embedded_data to store this upon unload
-window.byop_interactions = {
+// TODO: for poll resuts set:
+// `JSON.stringify([...window.byop_data.poll_results])`
+window.byop_data = {
     size_changed: 0,
     type_changed: 0,
     weighting_changed: 0,
     biased_party_changed: 0,
     party_bias_changed: 0,
     sample_changed: 0,
-    reset: 0
+    reset: 0,
+    poll_results: new Set()
 }
 
 /* HELPER FUNCTIONS */
@@ -89,6 +92,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
                 Math.round((biasedSample["Sonstige"]/SAMPLE_SIZE)*100)
             ];
+            window.byop_data.poll_results.add(JSON.stringify(yValues));
 
             const errorTerms = [
                 errorTerm(biasedSample["CDU/CSU"], SAMPLE_SIZE),
@@ -721,19 +725,19 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
         /* INTERACTION LOGGING */
         function recordInteraction (elem) {
-            if (elem.srcElement == fh_radio) window.byop_interactions.size_changed += 1;
-            if (elem.srcElement == ot_radio) window.byop_interactions.size_changed += 1;
-            if (elem.srcElement == th_radio) window.byop_interactions.size_changed += 1;
-            if (elem.srcElement == telephoneSample) window.byop_interactions.type_changed += 1;
-            if (elem.srcElement == socialMediaSample) window.byop_interactions.type_changed += 1;
-            if (elem.srcElement == onlineSample) window.byop_interactions.type_changed += 1;
-            if (elem.srcElement == redrawButton) window.byop_interactions.sample_changed += 1;
-            if (elem.srcElement == resetButton) window.byop_interactions.reset += 1;
-            if (elem.srcElement == demographicsCheckbox) window.byop_interactions.weighting_changed += 1;
-            if (elem.srcElement == voteCheckbox) window.byop_interactions.weighting_changed += 1;
-            if (elem.srcElement == noneCheckbox) window.byop_interactions.weighting_changed += 1;
-            if (elem.srcElement == biasSlider) window.byop_interactions.party_bias_changed += 1;
-            if (elem.srcElement = partyChooser)window.byop_interactions.biased_party_changed += 1;
+            if (elem.srcElement == fh_radio) window.byop_data.size_changed += 1;
+            if (elem.srcElement == ot_radio) window.byop_data.size_changed += 1;
+            if (elem.srcElement == tt_radio) window.byop_data.size_changed += 1;
+            if (elem.srcElement == telephoneSample) window.byop_data.type_changed += 1;
+            if (elem.srcElement == socialMediaSample) window.byop_data.type_changed += 1;
+            if (elem.srcElement == onlineSample) window.byop_data.type_changed += 1;
+            if (elem.srcElement == redrawButton) window.byop_data.sample_changed += 1;
+            if (elem.srcElement == resetButton) window.byop_data.reset += 1;
+            if (elem.srcElement == demographicsCheckbox) window.byop_data.weighting_changed += 1;
+            if (elem.srcElement == voteCheckbox) window.byop_data.weighting_changed += 1;
+            if (elem.srcElement == noneCheckbox) window.byop_data.weighting_changed += 1;
+            if (elem.srcElement == biasSlider) window.byop_data.party_bias_changed += 1;
+            if (elem.srcElement = partyChooser)window.byop_data.biased_party_changed += 1;
         }
 
         fh_radio.addEventListener('click', recordInteraction);
