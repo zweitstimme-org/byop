@@ -134,8 +134,8 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 (biasedSample["Sonstige"]/SAMPLE_SIZE)*100]
                 .map((elem, i) => elem - pollingAverage[i])
                 .map((elem, i) => {
-                    const differenceString = elem.toFixed(1);
-                    const differenceNumber = Number(differenceString);
+                    const differenceString = Math.abs(elem.toFixed(1));
+                    const differenceNumber = Number(elem.toFixed(1));
                     const differenceStringPerc = differenceString + '%';
                     const sign = differenceNumber > 0 ? "+" : (differenceNumber == 0 ? "±" : "-" )
                     return {
@@ -143,7 +143,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         y: 45,
                         xref: 'x',
                         yref: 'y',
-                        text: differenceStringPerc  ,
+                        text: sign + differenceStringPerc,
                         align: 'center',
                         showarrow: false,
                         font: {
