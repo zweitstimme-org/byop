@@ -140,7 +140,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     const sign = differenceNumber > 0 ? "+" : (differenceNumber == 0 ? "±" : "-" )
                     return {
                         x: xValues[i],
-                        y: 45,
+                        y: 50,
                         xref: 'x',
                         yref: 'y',
                         text: sign + differenceStringPerc,
@@ -173,7 +173,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 {
                     x: 0,
                     xanchor: 'left',
-                    y: 50,
+                    y: 55,
                     xref: 'paper',
                     yref: 'y',
                     text: 'Abweichung vom Umfragemittel:',
@@ -235,7 +235,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     showlegend: false,
                     barmode: 'overlay',
                     yaxis: {
-                        range: [0, 50],
+                        range: [0, 55],
                         tickvals: [0, 10, 20, 30, 40],
                         ticktext: ['0%', '10%', '20%', '30%', '40%']
                     },
