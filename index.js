@@ -2,6 +2,7 @@ let data;
 let rawSample = [];
 let weighedSample = {};
 let biasedSample = {};
+let drawnSamples = {};
 // TODO: How does that play with a restart of the experiment?
 // TODO: use embedded_data to store this upon unload
 window.byop_interactions = {
@@ -32,13 +33,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         /* SAMPLE SIZE */
         const fh_radio = document.getElementById("500")
         const ot_radio = document.getElementById("1000")
-        const th_radio = document.getElementById("10000")
+        const tt_radio = document.getElementById("10000")
         
         let SAMPLE_SIZE
         function updateSampleSize() {
             if (fh_radio.checked) SAMPLE_SIZE = 500;
             if (ot_radio.checked) SAMPLE_SIZE = 1000;
-            if (th_radio.checked) SAMPLE_SIZE = 10000;
+            if (tt_radio.checked) SAMPLE_SIZE = 10000;
+            console.log(`Sample size updated to ${SAMPLE_SIZE}!`);
         }
         updateSampleSize();
 
@@ -55,32 +57,6 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         /* PARTY BIAS */
         const partyChooser = document.getElementById("partyBias");
         const biasSlider = document.getElementById("partyAdaptionValue");
-        
-
-        /**
-         * Draws a new sample from the data.
-         * Respects the currently selected sample type.
-         */
-        function drawSample() {
-            rawSample = [];
-            weighedSample = {};
-            biasedSample = {};
-
-            updateSampleSize();
-            
-            shuffled = data.sort(() => 0.5 - Math.random());
-
-            const telephone = telephoneSample.checked;
-            const socialMedia = socialMediaSample.checked;
-            const online = onlineSample.checked;
-
-            let sample;
-            if (telephone) sample = shuffled.filter(i => i[5] === "1") 
-            if (socialMedia) sample = shuffled.filter(i => i[3] === "1")
-            if (online) sample = shuffled.filter(i => i[4] === "1")
-
-            rawSample = sample.slice(0, SAMPLE_SIZE);
-        }
 
         // https://www.media-analyse.at/Signifikanz
         function errorTerm(absItem, sample_size) {
@@ -368,33 +344,78 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             adaptForParty();               
         }
 
-        /**
-         * Description
-         */
+        function drawSample() {
+            drawnSamples = {
+                    500: {},
+                    1000: {},
+                    10000: {}
+            };
+
+            [500,1000,10000].forEach((sampleSize) => {
+                let shuffled = data.sort(() => 0.5 - Math.random());
+                drawnSamples[sampleSize]["telephone"] = shuffled.filter(i => i[5] === "1").slice(0, sampleSize);
+                shuffled = data.sort(() => 0.5 - Math.random());
+                drawnSamples[sampleSize]["socialmedia"] = shuffled.filter(i => i[3] === "1").slice(0, sampleSize);
+                shuffled = data.sort(() => 0.5 - Math.random());
+                drawnSamples[sampleSize]["online"] = shuffled.filter(i => i[4] === "1").slice(0, sampleSize);
+            })
+
+            switchSample();
+        }
+
         function redraw() {
             drawSample();
             updateWeights(true); // triggers the whole pipeline
         }
 
+        function switchSample() {
+            rawSample = [];
+            weighedSample = {};
+            biasedSample = {};
+
+            updateSampleSize();
+
+            const telephone = telephoneSample.checked;
+            const socialMedia = socialMediaSample.checked;
+            const online = onlineSample.checked;
+
+            if (SAMPLE_SIZE == 500) {
+                if (telephone) rawSample = drawnSamples["500"]["telephone"];
+                if (socialMedia) rawSample = drawnSamples["500"]["socialmedia"];
+                if (online) rawSample = drawnSamples["500"]["online"];
+            }
+            if (SAMPLE_SIZE == 1000) {
+                if (telephone) rawSample = drawnSamples["1000"]["telephone"];
+                if (socialMedia) rawSample = drawnSamples["1000"]["socialmedia"];
+                if (online) rawSample = drawnSamples["1000"]["online"];
+            }
+            if (SAMPLE_SIZE == 10000) {
+                if (telephone) rawSample = drawnSamples["10000"]["telephone"];
+                if (socialMedia) rawSample = drawnSamples["10000"]["socialmedia"];
+                if (online) rawSample = drawnSamples["10000"]["online"];
+            }
+            updateWeights(true); // triggers the whole pipeline
+        }
+
         function reset() {
-            fh_radio.checked = true;
+            ot_radio.checked = true;
             onlineSample.checked = true;
             demographicsCheckbox.checked = false;
             voteCheckbox.checked = false;
             noneCheckbox.checked = true;
             partyChooser.value = "CDU/CSU";
             biasSlider.value = 0;
-            updateWeights(true); // triggers the whole pipeline
+            switchSample();
         }
 
         /* USER CONTROL FLOW */
-        fh_radio.addEventListener('click', redraw);
-        ot_radio.addEventListener('click', redraw);
-        th_radio.addEventListener('click', redraw);
+        fh_radio.addEventListener('click', switchSample);
+        ot_radio.addEventListener('click', switchSample);
+        tt_radio.addEventListener('click', switchSample);
 
-        telephoneSample.addEventListener('click', redraw);
-        socialMediaSample.addEventListener('click', redraw);
-        onlineSample.addEventListener('click', redraw);
+        telephoneSample.addEventListener('click', switchSample);
+        socialMediaSample.addEventListener('click', switchSample);
+        onlineSample.addEventListener('click', switchSample);
         
         redrawButton.addEventListener("click", redraw);
         resetButton.addEventListener("click", reset);
@@ -425,7 +446,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
         fh_radio.addEventListener('click', recordInteraction);
         ot_radio.addEventListener('click', recordInteraction);
-        th_radio.addEventListener('click', recordInteraction);
+        tt_radio.addEventListener('click', recordInteraction);
         telephoneSample.addEventListener('click', recordInteraction);
         socialMediaSample.addEventListener('click', recordInteraction);
         onlineSample.addEventListener('click', recordInteraction);
