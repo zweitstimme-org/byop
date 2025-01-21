@@ -15,11 +15,11 @@
                 <legend>Stichprobengröße:</legend>
             
                 <div>
-                  <input name="samplesize" type="radio" id="500" value="500" checked />
+                  <input name="samplesize" type="radio" id="500" value="500" />
                   <label for="500">500</label>
                 </div>
                 <div>
-                    <input name="samplesize" type="radio" id="1000" value="1000" />
+                    <input name="samplesize" type="radio" id="1000" value="1000" checked />
                     <label for="1000">1.000</label>
                   </div>
                   <div>
@@ -32,18 +32,18 @@
                 <legend>Rekrutierungsmethode:</legend>
             
                 <div>
-                  <input name="sampletype" type="radio" id="socialMedia" value="sm" checked />
+                  <input name="sampletype" type="radio" id="socialMedia" value="sm"  />
                   <label for="socialMedia">Social Media Werbung</label>
                 </div>
               
                 <div>
-                    <input name="sampletype" type="radio" id="online" value="on" />
+                    <input name="sampletype" type="radio" id="online" value="on" checked/>
                     <label for="online">Online über Marktforschungsinstitut</label>
                   </div>
               
                   <div>
                     <input name="sampletype" type="radio" id="tel" value="tel" />
-                    <label for="tel">Zufällige Stichprove via Telefon</label>
+                    <label for="tel">Zufällige Stichprobe via Telefon und Handy</label>
                   </div>
               </fieldset>
         </div>
@@ -93,11 +93,11 @@
                   <option value="5" label="+5"></option>
                 </datalist>
               </div>
-              <label for="partyAdaptionValue">Anpassung des Wertes der ausgewählten Partei</label>
+              <label for="partyAdaptionValue">"Partei-Bonus"</label>
               </div>
         </div>
     </div>
     <!-- Maybe do not have this? Is good for testing, but probably confusing in reality. -->
-    <button id="redraw">Neues Sample mit gleichen Einstellungen generieren</button>
-    <button id="reset">Einstellungen Zurücksetzen</button>
+    <button id="redraw">Neue Stichprobe ziehen</button>
+    <button id="reset">Einstellungen zurücksetzen</button>
 </body>
