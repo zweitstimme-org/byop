@@ -40,7 +40,7 @@ electorate_sample_age[female] <- sample(
 # Past Vote (given age and sex) -------------------------------------------
 
 # page 107
-PAST_VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "FDP", "LINKE", "B90", "sonstige")
+PAST_VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "FDP", "LINKE", "B90", "Sonstige")
 electorate_sample_vote <- rep(NA, TOTAL_SAMPLE_SIZE)
 
 male_18 <- which(electorate_sample_sex == "m" & electorate_sample_age == "18")
@@ -143,7 +143,7 @@ electorate_sample_vote[female_70] <- sample(
 
 # Vote Preference Modelling -----------------------------------------------
 
-VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "B90", "LINKE","FDP", "sonstige", "BSW")
+VOTE_OPTIONS <- c("CDU/CSU", "SPD", "AfD", "B90", "LINKE","FDP", "Sonstige", "BSW")
 
 # https://www.tagesschau.de/wahl/archiv/2024-06-09-EP-DE/analyse-wanderung.shtml
 # https://www.bundeswahlleiterin.de/europawahlen/2024/ergebnisse/bund-99.html#stimmen-prozente8
@@ -185,7 +185,7 @@ data <- data %>%
     B90_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "B90"]),
     LINKE_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "LINKE"]),
     FDP_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "FDP"]),
-    sonstige_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "sonstige"]),
+    sonstige_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "Sonstige"]),
     BSW_prob = sapply(electorate_sample_vote, function(v) transition_matrix[v, "BSW"])
   )
 
@@ -209,7 +209,7 @@ desired_shares <- c("CDU/CSU" = 0.30,
                     "B90" = 0.15,
                     "LINKE" = 0.04,
                     "FDP" = 0.04,
-                    "sonstige" = 0.08,
+                    "Sonstige" = 0.08,
                     "BSW" = 0.04)
 
 adjusted_probs <- function(probs, desired_shares) {
@@ -224,12 +224,12 @@ adjusted_probs <- function(probs, desired_shares) {
 data$adjusted_probs <- adjusted_probs(as.matrix(data$predicted_probs), desired_shares)
 
 # Careful here: We need to sample from party names in alphabetical order!
-party_model_order <- c("AfD","B90","BSW","CDU/CSU",'FDP','LINKE','sonstige','SPD')
+party_model_order <- c("AfD","B90","BSW","CDU/CSU",'FDP','LINKE','Sonstige','SPD')
 data$final_vote <- apply(data$predicted_probs, 1, function(row) {
   sample(party_model_order, size = 1, prob = row)
   })
 
-# Check whether ajustment worked
+# Check whether adjustment worked
 table(data$final_vote) / nrow(data)
 
 # Modus (partially given age, and vote) ------------------------------
@@ -247,13 +247,13 @@ electorate_sample_social_media[older] <- sample(
   replace = TRUE, 
   prob = c(1/3,2/3)
 )
-# 3/4 of afd
+# 1/2 of afd
 afd <- which(electorate_sample_vote == "AfD")
 electorate_sample_social_media[afd] <- sample(
   c("1", "0"), 
   size = length(afd), 
   replace = TRUE, 
-  prob = c(0.75,0.25)
+  prob = c(0.5,0.5)
 )
 # all 18 and 25
 # do this after afd so that we do not flip back!
@@ -263,25 +263,41 @@ electorate_sample_social_media[which(electorate_sample_age == "25")] <- "1"
 ## Telephone ------------------------------------------------------------
 
 electorate_sample_telephone <- rep(NA, TOTAL_SAMPLE_SIZE)
-# 1/3 of 25-70
+# 2/3 of 25-70
 telephone <- which(electorate_sample_age != "18")
 electorate_sample_telephone[telephone] <- sample(
   c("1", "0"), 
   size = length(telephone), 
   replace = TRUE, 
-  prob = c(1/3,2/3)
+  prob = c(2/3,1/3)
+)
+# 20% of 18
+telephone_18 <- which(electorate_sample_age == "18")
+electorate_sample_telephone[telephone_18] <- sample(
+  c("1", "0"), 
+  size = length(telephone), 
+  replace = TRUE, 
+  prob = c(0.2,0.8)
 )
 
 ## Online ------------------------------------------------------------
 
 electorate_sample_online <- rep(NA, TOTAL_SAMPLE_SIZE)
-# 1/3 of 18-60
+# 40% of 18-60
 online <- which(electorate_sample_age != "70")
 electorate_sample_online[online] <- sample(
   c("1", "0"), 
   size = length(online), 
   replace = TRUE, 
   prob = c(1/3,2/3)
+)
+# 20% of 70
+online <- which(electorate_sample_age == "70")
+electorate_sample_online[online] <- sample(
+  c("1", "0"), 
+  size = length(online), 
+  replace = TRUE, 
+  prob = c(0.2,0.8)
 )  
   
 # Export ------------------------------------------------------------------
