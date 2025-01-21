@@ -101,6 +101,12 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 errorTerm(biasedSample["Sonstige"], actualSampleSize)
             ]
 
+            const intervals = yValues.map((num, i) => {
+                const intervalStart = num - Math.round(errorTerms[i]);
+                const intervalEnd = num + Math.round(errorTerms[i]);
+                return `${intervalStart}% - ${intervalEnd}%`;
+            })
+
             texts = [
                 Math.round((biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100),
                 Math.round((biasedSample["SPD"]/SAMPLE_SIZE)*100),
@@ -151,11 +157,13 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             ]
                         },
                         type: "bar",
-                        width: 0.9
+                        width: 0.9,
+                        hoverinfo: 'none' // Disable hover tooltips
                     },
                     { /* MAIN BARS */
                         x: xValues, // labels
                         y: yValues,
+                        customdata: intervals,
                         marker: { // custom party colors
                             color: [
                                 "#000000",
@@ -174,7 +182,8 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                             visible: true
                           },
                         type: "bar",
-                        width: 0.7
+                        width: 0.7,
+                        hovertemplate: '%{x}: %{customdata}<extra></extra>'
                     }                    
                 ], // data
                 {
