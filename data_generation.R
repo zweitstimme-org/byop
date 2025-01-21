@@ -11,7 +11,7 @@ TOTAL_SAMPLE_SIZE <-100000
 
 # Sex ---------------------------------------------------------------------
 
-electorate_sample_sex <- sample(c("f", "m"), size = TOTAL_SAMPLE_SIZE, replace = TRUE, prob = c(0.52, 0.48))
+electorate_sample_sex <- sample(c("f", "m"), size = TOTAL_SAMPLE_SIZE, replace = TRUE, prob = c(0.514, 0.486))
 
 # Age (given sex) ---------------------------------------------------------
 
@@ -203,7 +203,7 @@ data$predicted_probs <- predict(model, newdata = data, type = "probs")
 
 # UPDATE POLL RESULTS HERE IF DESIRED
 # Currently: Forschungsgruppe Wahle 07.-09.01 
-desired_shares <- c("CDU/CSU" = 0.3,
+desired_shares <- c("CDU/CSU" = 0.30,
                     "SPD" = 0.14,
                     "AfD" = 0.21,
                     "B90" = 0.15,
@@ -214,10 +214,7 @@ desired_shares <- c("CDU/CSU" = 0.3,
 
 adjusted_probs <- function(probs, desired_shares) {
   for (party in names(desired_shares)) {
-    print(desired_shares[party] / sum(probs[, party]))
     adjustment_factor <- desired_shares[party] / sum(probs[, party])
-    print(adjustment_factor)
-    print(probs[, party] * adjustment_factor)
     probs[, party] <- probs[, party] * adjustment_factor
   }
   probs <- probs / rowSums(probs) # ensure valid probs
