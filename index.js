@@ -107,7 +107,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                 return `${intervalStart}% - ${intervalEnd}%`;
             })
 
-            texts = [
+            performanceTexts = [
                 (biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100,
                 (biasedSample["SPD"]/SAMPLE_SIZE)*100,
                 (biasedSample["AfD"]/SAMPLE_SIZE)*100,
@@ -120,24 +120,67 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
 
             const xValues = ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"];
 
+            // DAWUM Wahltrend
+            const pollingAverage = [30.2, 16, 20.3, 13.8, 4.2, 3.5, 5.2, 6.8];
+
+            const differenceAnnotations = [
+                (biasedSample["CDU/CSU"]/SAMPLE_SIZE)*100,
+                (biasedSample["SPD"]/SAMPLE_SIZE)*100,
+                (biasedSample["AfD"]/SAMPLE_SIZE)*100,
+                (biasedSample["B90"]/SAMPLE_SIZE)*100,
+                (biasedSample["FDP"]/SAMPLE_SIZE)*100,
+                (biasedSample["LINKE"]/SAMPLE_SIZE)*100,
+                (biasedSample["BSW"]/SAMPLE_SIZE)*100,
+                (biasedSample["Sonstige"]/SAMPLE_SIZE)*100]
+                .map((elem, i) => elem - pollingAverage[i])
+                .map((elem, i) => {
+                    const differenceString = elem.toFixed(1);
+                    const differenceNumber = Number(differenceString);
+                    const differenceStringPerc = differenceString + '%';
+                    const sign = differenceNumber > 0 ? "+" : (differenceNumber == 0 ? "±" : "-" )
+                    return {
+                        x: xValues[i],
+                        y: 45,
+                        xref: 'x',
+                        yref: 'y',
+                        text: differenceStringPerc  ,
+                        align: 'center',
+                        showarrow: false,
+                        font: {
+                            color: sign == "+" ? 'green' : (sign == "±" ? 'black' : 'red'),
+                        }
+                    }
+                } );
+
             const annotations = []
-            textHeight = 35;
+            annotations.push(...differenceAnnotations);
             for (let i = 0; i < 8; i++) {
+                // Performance in Sample
                 annotations.push(
                     {
                         x: xValues[i],
                         y: yValues[i] + errorTerms[i] + 2,
                         xref: 'x',
                         yref: 'y',
-                        text: texts[i],
+                        text: performanceTexts[i],
                         align: 'center',
                         showarrow: false
                     }
                 )
             }
 
-            // DAWUM Wahltrend
-            const pollingAverage = [30.2, 16, 20.3, 13.8, 4.2, 3.5, 5.2, 6.8];
+            annotations.push(
+                {
+                    x: 0,
+                    xanchor: 'left',
+                    y: 50,
+                    xref: 'paper',
+                    yref: 'y',
+                    text: 'Abweichung vom Umfragemittel:',
+                    align: 'center',
+                    showarrow: false
+                }
+            )
 
             Plotly.newPlot("holder", // elem
                 [
@@ -146,14 +189,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                         y: pollingAverage,
                         marker: { // custom party colors
                             color: [
-                                setOpacity("#000000", 0.6),
-                                setOpacity("#ff0000", 0.6),
-                                setOpacity("#0000ff", 0.6),
-                                setOpacity("#008000", 0.6),
-                                setOpacity("#ffff00", 0.6),
-                                setOpacity("#ff00ff", 0.6),
-                                setOpacity("#7b2450", 0.6),
-                                setOpacity("#c0c0c0", 0.6),
+                                setOpacity("#000000", 0.4),
+                                setOpacity("#ff0000", 0.4),
+                                setOpacity("#0000ff", 0.4),
+                                setOpacity("#008000", 0.4),
+                                setOpacity("#ffff00", 0.4),
+                                setOpacity("#ff00ff", 0.4),
+                                setOpacity("#7b2450", 0.4),
+                                setOpacity("#c0c0c0", 0.4),
                             ]
                         },
                         type: "bar",
@@ -183,7 +226,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                           },
                         type: "bar",
                         width: 0.7,
-                        hovertemplate: '%{x}: %{customdata}<extra></extra>'
+                        hovertemplate: '%{customdata}<extra></extra>'
                     }                    
                 ], // data
                 {
@@ -191,12 +234,20 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     "height": 350,
                     showlegend: false,
                     barmode: 'overlay',
-                    yaxis: {range: [0, 40]},
+                    yaxis: {
+                        range: [0, 50],
+                        tickvals: [0, 10, 20, 30, 40],
+                        ticktext: ['0%', '10%', '20%', '30%', '40%']
+                    },
                     annotations: annotations,
-                    dragmode: false
+                    dragmode: false,
+                    title: {
+                        text: "Umfrage: Wenn am nächsten Sonntag Bundestagswahl wäre..."
+                    }
                 }, // layout
                 {
                     displayModeBar: false,
+                    doubleClick: false
                 } // config
             )
                     
