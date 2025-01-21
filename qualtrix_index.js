@@ -1,14 +1,9 @@
-// BEGIN QUALTRIX INSERT BEFORE CALLBACKS ---
 let data;
 let rawSample = [];
 let weighedSample = {};
 let biasedSample = {};
 let drawnSamples = {};
 let sampleWeights = null;
-// --- END QUALTRIX INSERT BEFORE CALLBACKS
-
-
-// TODO: How does that play with a restart of the experiment?
 window.byop_data = {
     size_changed: 0,
     type_changed: 0,
@@ -20,21 +15,14 @@ window.byop_data = {
     poll_results: new Set()
 }
 
-/* HELPER FUNCTIONS */
-// BEGIN QUALTRIX INSERT addOnload ---
-const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
-const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-// --- END QUALTRIX INSERT addOnload
-
-// TODO: Exchange this for productive link!
-// Dev Link: https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json
-// Prod Link: https://rawcdn.githack.com/zweitstimme-org/byop/<COMMIT HASH>/sample_data.json
-fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
-    .then((res) => res.json())
-    .then(d => data = d)
-    .then(() => {
-
-        const redrawButton = document.getElementById("redraw");
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+    const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
+	const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
+	jQuery.getScript("https://cdn.plot.ly/plotly-3.0.0-rc.2.min.js", () => {
+	  jQuery.getJSON("https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json", (d) => {
+					data = d;
+		        const redrawButton = document.getElementById("redraw");
         const resetButton = document.getElementById("reset");
 
         /* SAMPLE SIZE */
@@ -285,7 +273,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     else acc[vote] = 1;
                     return acc;
                 }, {})
-                weighedSample = { ...votesByParty };
+                weighedSample = jQuery.extend(true, {}, votesByParty);
                 adaptForParty();
                 return;
             };
@@ -449,7 +437,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     return acc;
                 }, {});
 
-                const demographicsShares = { ...demographicsTotals };
+                const demographicsShares = jQuery.extend(true, {}, demographicsTotals);
                 Object.keys(demographicsTotals["m"]).forEach(key => {
                     demographicsShares["m"][key] = demographicsTotals["m"][key]/rawSample.length;
                 });
@@ -482,7 +470,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     votes[key] = Math.round(votes[key]); 
                 });
 
-                weighedSample = { ...votes };
+                weighedSample = jQuery.extend(true, {}, votes);
                 adaptForParty();
                 return;
             }
@@ -496,7 +484,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     return acc;
                 }, {});
 
-                const pastVotesShares = { ...pastVotesTotal };
+                const pastVotesShares = jQuery.extend(true, {}, pastVotesTotal);
                 Object.keys(pastVotesTotal).forEach(key => {
                     pastVotesShares[key] = pastVotesTotal[key]/rawSample.length;
                 });
@@ -519,7 +507,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     votes[key] = Math.round(votes[key]); 
                 });
 
-                weighedSample = { ...votes };
+                weighedSample = jQuery.extend(true, {}, votes);
                 adaptForParty();
                 return;
             }
@@ -538,7 +526,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     return acc;
                 }, {});
 
-                const allFactorShares = { ...allFactorTotals };
+                const allFactorShares = jQuery.extend(true, {}, allFactorTotals);
                 Object.keys(allFactorTotals["m"]).forEach(ageGroup => {
                     Object.keys(allFactorTotals["m"][ageGroup]).forEach(party => {
                         allFactorShares["m"][ageGroup][party] = allFactorTotals["m"][ageGroup][party]/rawSample.length;
@@ -595,7 +583,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     votes[key] = Math.round(votes[key]); 
                 });
 
-                weighedSample = { ...votes };
+                weighedSample = jQuery.extend(true, {}, votes);
                 adaptForParty();
                 return;
             }
@@ -607,7 +595,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             
             // Do nothing if we do not introduce bias
             if (effectSize == 0) {
-                biasedSample = { ...weighedSample };
+                biasedSample = jQuery.extend(true, {}, weighedSample);
                 updateBarChart();
                 return;
             };
@@ -758,5 +746,15 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         partyChooser.addEventListener('change', recordInteraction);
 
         // Trigger initial load
-        redraw();
-    });
+        redraw(); 
+      })
+});})       
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+    const setString = JSON.stringify([...window.byop_data.poll_results]);
+    delete window.byop_data.poll_results;
+    const dataString = JSON.stringify(window.byop_data);
+    const dataToEmbed = dataString + setString;
+    Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_data', dataToEmbed);
+});
