@@ -102,7 +102,8 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             ]
 
             const intervals = yValues.map((num, i) => {
-                const intervalStart = num - Math.round(errorTerms[i]);
+                let intervalStart = num - Math.round(errorTerms[i]);
+                if (intervalStart < 0) intervalStart = 0;
                 const intervalEnd = num + Math.round(errorTerms[i]);
                 return `${intervalStart}% - ${intervalEnd}%`;
             })
