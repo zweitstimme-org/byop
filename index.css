@@ -34,3 +34,7 @@ datalist option {
     display: block; /* Makes it easier to control layout */
     text-align: center; /* Center the text */
 }
+
+.js-plotly-plot .plotly * {
+  cursor: default !important;
+}
