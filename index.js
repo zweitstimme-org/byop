@@ -61,8 +61,18 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
         // https://www.media-analyse.at/Signifikanz
         function errorTerm(absItem, sample_size) {
             absItem = Number(absItem);
-            const percentItem = (absItem/sample_size).toFixed(2);
-            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/sample_size)
+            const weighedTotal = sumValues(biasedSample);
+            const p_hat = absItem/weighedTotal; 
+            let n_eff;
+            if (!sampleWeights) n_eff = sample_size
+            else {
+                const squaredSumOfWeights = Math.pow(sampleWeights.reduce((acc, curr) => acc+curr, 0), 2)
+                const sumOfSquaredWeights = sampleWeights.reduce((acc, curr) => acc+Math.pow(curr, 2))
+                n_eff = squaredSumOfWeights/sumOfSquaredWeights
+            }
+            
+            const percentItem = (p_hat).toFixed(2);
+            const err = 1.96*Math.sqrt((percentItem*(1-percentItem))/n_eff)
             return err*100; // conversion for correct display in plotly
         }
 
@@ -81,14 +91,14 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
             ];
 
             const errorTerms = [
-                errorTerm(biasedSample["CDU/CSU"], actualSampleSize),
-                errorTerm(biasedSample["SPD"], actualSampleSize),
-                errorTerm(biasedSample["AfD"], actualSampleSize),
-                errorTerm(biasedSample["B90"], actualSampleSize),
-                errorTerm(biasedSample["FDP"], actualSampleSize),
-                errorTerm(biasedSample["LINKE"], actualSampleSize),
-                errorTerm(biasedSample["BSW"], actualSampleSize),
-                errorTerm(biasedSample["Sonstige"], actualSampleSize)
+                errorTerm(biasedSample["CDU/CSU"], SAMPLE_SIZE),
+                errorTerm(biasedSample["SPD"], SAMPLE_SIZE),
+                errorTerm(biasedSample["AfD"], SAMPLE_SIZE),
+                errorTerm(biasedSample["B90"], SAMPLE_SIZE),
+                errorTerm(biasedSample["FDP"], SAMPLE_SIZE),
+                errorTerm(biasedSample["LINKE"], SAMPLE_SIZE),
+                errorTerm(biasedSample["BSW"], SAMPLE_SIZE),
+                errorTerm(biasedSample["Sonstige"], SAMPLE_SIZE)
             ]
 
             const intervals = yValues.map((num, i) => {
