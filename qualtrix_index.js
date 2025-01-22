@@ -288,7 +288,10 @@ Qualtrics.SurveyEngine.addOnReady(function()
             const byPastVote = voteCheckbox.checked;
 
             if (byDemographics || byPastVote ) noneCheckbox.checked = false;
-            else noneCheckbox.checked = true;
+            else {
+                noneCheckbox.checked = true;
+                weightingText.style.setProperty('display', 'none');
+            };
 
             /* NO WEIGHTING */
             if (!byDemographics && !byPastVote) {
