@@ -263,7 +263,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     },
                     annotations: annotations,
                     dragmode: false,
-                    margin: {t: 10, l: 40, r: 40, b: 0}
+                    margin: {t: 20, l: 40, r: 40, b: 0}
                 }, // layout
                 {
                     displayModeBar: false,
