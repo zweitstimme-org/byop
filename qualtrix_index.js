@@ -4,6 +4,8 @@ let weighedSample = {};
 let biasedSample = {};
 let drawnSamples = {};
 let sampleWeights = null;
+let foundEmbeddedData = null;
+
 window.byop_data = {
     size_changed: 0,
     type_changed: 0,
@@ -17,6 +19,7 @@ window.byop_data = {
 
 Qualtrics.SurveyEngine.addOnReady(function()
 {
+    foundEmbeddedData = Qualtrics.SurveyEngine.getEmbeddedData('dashboard_experiment_data');
     const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
 	const setOpacity = (hex, alpha) => {
         const colorWithOpa = String(hex)+Math.floor(alpha * 255).toString(16).padStart(2, 0);
@@ -817,11 +820,12 @@ Qualtrics.SurveyEngine.addOnReady(function()
       })
 });})       
 
-Qualtrics.SurveyEngine.addOnUnload(function()
+Qualtrics.SurveyEngine.addOnPageSubmit(function()
 {
     const setString = JSON.stringify([...window.byop_data.poll_results]);
     delete window.byop_data.poll_results;
     const dataString = JSON.stringify(window.byop_data);
-    const dataToEmbed = dataString + setString;
+    let dataToEmbed = dataString + setString;
+    if (foundEmbeddedData) dataToEmbed = foundEmbeddedData + dataToEmbed
     Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_data', dataToEmbed);
 });
