@@ -18,7 +18,10 @@ window.byop_data = {
 Qualtrics.SurveyEngine.addOnReady(function()
 {
     const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
-	const setOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
+	const setOpacity = (hex, alpha) => {
+        const colorWithOpa = String(hex)+Math.floor(alpha * 255).toString(16).padStart(2, 0);
+        return colorWithOpa;
+    };
 	jQuery.getScript("https://cdn.plot.ly/plotly-3.0.0-rc.2.min.js", () => {
 	  jQuery.getJSON("https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json", (d) => {
 					data = d;
@@ -100,7 +103,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 let intervalStart = num - Math.round(errorTerms[i]);
                 if (intervalStart < 0) intervalStart = 0;
                 const intervalEnd = num + Math.round(errorTerms[i]);
-                return `${intervalStart}% - ${intervalEnd}%`;
+                return String(intervalStart)+"% - "+String(intervalEnd)+"%";
             })
 
             performanceTexts = [
@@ -112,7 +115,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 (biasedSample["LINKE"]/SAMPLE_SIZE)*100,
                 (biasedSample["BSW"]/SAMPLE_SIZE)*100,
                 (biasedSample["Sonstige"]/SAMPLE_SIZE)*100
-            ].map(n => `${n.toFixed(1)}%`);
+            ].map(n => n.toFixed(1)+"%");
 
             const xValues = ["CDU/CSU", "SPD", "AfD", "Grüne", "FDP", "Linke", "BSW", "Sonstige"];
 
