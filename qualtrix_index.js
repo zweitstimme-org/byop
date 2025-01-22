@@ -172,7 +172,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     y: 55,
                     xref: 'paper',
                     yref: 'y',
-                    text: 'Abweichung vom Umfragemittel:',
+                    text: 'Abweichung vom Durchschnitt anderer Umfragen:',
                     align: 'center',
                     showarrow: false
                 }
@@ -238,7 +238,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     annotations: annotations,
                     dragmode: false,
                     title: {
-                        text: "Umfrage: Wenn am nächsten Sonntag Bundestagswahl wäre..."
+                        text: "Wenn am nächsten Sonntag Bundestagswahl wäre..."
                     }
                 }, // layout
                 {

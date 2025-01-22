@@ -184,7 +184,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     y: 55,
                     xref: 'paper',
                     yref: 'y',
-                    text: 'Abweichung vom Umfragemittel:',
+                    text: 'Abweichung vom Durchschnitt anderer Umfragen:',
                     align: 'center',
                     showarrow: false
                 }
@@ -250,7 +250,7 @@ fetch('https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json')
                     annotations: annotations,
                     dragmode: false,
                     title: {
-                        text: "Umfrage: Wenn am nächsten Sonntag Bundestagswahl wäre..."
+                        text: "Wenn am nächsten Sonntag Bundestagswahl wäre..."
                     }
                 }, // layout
                 {
