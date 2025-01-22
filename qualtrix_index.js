@@ -30,9 +30,11 @@ Qualtrics.SurveyEngine.addOnReady(function()
             if (holderWidth > 600) holderWidth = 600;
 			let holderHeight = Math.round(holderWidth / 1.428);
 		  if (holderHeight < 250) holderHeight = 250;
-		        const redrawButton = document.getElementById("redraw");
+		
+        const redrawButton = document.getElementById("redraw");
         const resetButton = document.getElementById("resetByop");
 
+        const loadingIndicator = document.getElementById("loadingIndicator");
         /* SAMPLE SIZE */
         const fh_radio = document.getElementById("500")
         const ot_radio = document.getElementById("1000")
@@ -264,7 +266,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     displayModeBar: false,
                     doubleClick: false
                 } // config
-            )
+            ).then(function() { 
+                loadingIndicator.style.setProperty('display', 'none'); 
+            });
                     
             SAMPLE_SIZE = actualSampleSize;
         };
