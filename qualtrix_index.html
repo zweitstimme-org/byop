@@ -1,0 +1,79 @@
+<hr>
+<p style="font-weight: bold;text-align: center;" class="plotTitle">Wenn am nächsten Sonntag Bundestagswahl wäre,...</p>
+
+<div style="display: flex; align-items: center; justify-content: center;" id="holder">&nbsp;</div>
+
+<div id="controls" class="container">
+  <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
+    <legend>Stichprobengröße:</legend>
+
+    <div><input value="500" type="radio" name="samplesize" id="500"> <label for="500">500</label></div>
+
+    <div><input value="1000" type="radio" name="samplesize" id="1000" checked="checked"> <label for="1000">1.000</label>
+    </div>
+
+    <div><input value="10000" type="radio" name="samplesize" id="10000"> <label for="10000">10.000</label></div>
+  </fieldset>
+
+  <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
+    <legend>Rekrutierungsmethode:</legend>
+
+    <div><input value="sm" type="radio" name="sampletype" id="socialMedia"> <label for="socialMedia">Social Media
+        Werbung</label></div>
+
+    <div><input value="on" type="radio" name="sampletype" id="online" checked="checked"> <label for="online">Online über
+        Marktforschungsinstitut</label></div>
+
+    <div><input value="tel" type="radio" name="sampletype" id="tel"> <label for="tel">Zufällige Stichprobe via Telefon
+        und Handy</label></div>
+  </fieldset>
+
+  <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
+    <legend>Gewichtung:</legend>
+
+    <div><input value="none" type="checkbox" id="none" checked="true"> <label for="none">Keine</label></div>
+
+    <div><input value="demographics" type="checkbox" id="demographics"> <label for="age">Alter &amp; Geschlecht</label>
+    </div>
+
+    <div><input value="vote" type="checkbox" id="vote"> <label for="vote">Vergangenes Wahlverhalten</label></div>
+  </fieldset>
+
+  <div id="right">
+    <div id="partyAdaption">
+      <p style="font-weight: bold;">"Partei-Bonus":</p>
+
+      <div style="display: flex;flex-wrap: wrap;"><select style="border-width: 1px; height: 25px;" name="partyBias"
+          id="partyBias">
+          <option value="CDU/CSU">CDU/CSU</option>
+          <option value="SPD">SPD</option>
+          <option value="AfD">AfD</option>
+          <option value="B90">Grüne</option>
+          <option value="FDP">FDP</option>
+          <option value="LINKE">Linke</option>
+          <option value="BSW">BSW</option>
+          <option value="Sonstige">Sonstige</option>
+        </select>
+
+        <div><input type="range" step="1" name="partyAdaptionValue" min="-5" max="5" list="tickmarks"
+            id="partyAdaptionValue"> <datalist id="tickmarks">
+            <option value="-5" style="padding-top: 0px;" label="≈-5%"></option>
+            <option value="-4"></option>
+            <option value="-3"></option>
+            <option value="-2"></option>
+            <option value="-1"></option>
+            <option value="0" style="padding-top: 0px;" label="≈0%"></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5" style="padding-top: 0px;" label="≈+%5"></option>
+          </datalist></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding-top: 10px; display: flex;justify-content: center;flex-wrap: wrap;" class="buttons"><button
+      style="margin: 10px;" id="redraw">Neue Stichprobe ziehen</button><button style="margin: 10px;"
+      id="resetByop">Einstellungen zurücksetzen</button></div>
+</div>
