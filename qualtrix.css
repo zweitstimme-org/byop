@@ -1,19 +1,19 @@
-<style type="text/css">
-.js-plotly-plot .plotly {
-    width: unset !important;
+<style type="text/css">.js-plotly-plot .plotly {
+width: unset !important;
 }
 .Skin input[type="checkbox"], .Skin input[type="radio"] {
-    position: unset !important;
-    opacity: unset !important;
-    z-index:unset !important;
-    height: unset !important;
-    width: unset !important;
+  position: unset !important;
+  opacity: unset !important;
+  z-index:unset !important;
+  height: unset !important;
+  width: unset !important;
 }
 legend {
     font-weight: bold;
+    margin-top: 10px;
 }
 .Skin fieldset {
-    padding-bottom: 10px;
+
 }
 .container div {
     padding-right: 10px;
@@ -31,10 +31,10 @@ datalist option {
     text-align: center; /* Center the text */
 }
 .js-plotly-plot .plotly * {
-    cursor: default !important;
+  cursor: default !important;
 }
 h1 {
-    padding-bottom: 15px;
-    line-height: 1;
+  padding-bottom: 15px;
+  line-height: 1;
 }
 </style>

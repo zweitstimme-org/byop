@@ -14,6 +14,12 @@
 
     <div><input value="10000" type="radio" name="samplesize" id="10000"> <label for="10000">10.000</label></div>
   </fieldset>
+  <div id="sampleSizeText" style="display: none; padding-right: 0px;">
+    <p style="font-style: italic;">Was passiert, wenn Sie eine kleine (500), mittlere (1000) oder große Anzahl von Personen befragen?</p>
+    <p>
+Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3000 Personen. Je mehr Personen befragt werden, desto weniger schwankt das Ergebnis zufällig. Institute geben häufig eine "Fehlertoleranz" von beispielsweise 3% an. Damit versuchen sie auszudrücken, dass die wahre Unterstützung für eine Partei in der Grundgesamtheit mit hoher Wahrscheinlichkeit im Umfang von maximal +/- 3% vom Umfrageergebnis abweicht. Das ist jedoch stark vereinfacht, weil trotzdem noch systematische Fehler entstehen können (siehe bei "Rekrutierungsmethode").
+    </p>
+  </div>
 
   <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
     <legend>Rekrutierungsmethode:</legend>
@@ -27,6 +33,11 @@
     <div><input value="tel" type="radio" name="sampletype" id="tel"> <label for="tel">Zufällige Stichprobe via Telefon
         und Handy</label></div>
   </fieldset>
+  <div id="modeText" style="display: none; padding-right: 0px;">
+    <p style="font-style: italic;">Was passiert, wenn Sie Befragte über Social-Media-Werbung, ein Online-Panel eines Marktforschungsinstituts oder eine telefonische Befragung zufällig ausgewählter Personen auswählen?</p>
+    <p>
+      Die Methode, wie Befragte ausgewählt werden, kann das Ergebnis stark beeinflussen. Personen, die über Social-Media-Werbung erreicht werden, sind oft jünger und politisch interessierter. Je nach Werbung und Plattform können auch vor allem Sympathisanten bestimmter Parteien angesprochen werden. Online-Panels enthalten oft Menschen, die regelmäßig an Umfragen teilnehmen, was ebenfalls nicht dem Querschnitt der Wählerschaft entspricht. Befragungen zufällig ausgewählter Personen beispielsweise über zufällig gewählte Telefonnummern gelten als repräsentativer, erreichen aber oft weniger junge Menschen oder Berufstätige mit weniger Zeit.    </p>
+  </div>
 
   <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
     <legend>Gewichtung:</legend>
@@ -38,6 +49,12 @@
 
     <div><input value="vote" type="checkbox" id="vote"> <label for="vote">Vergangenes Wahlverhalten</label></div>
   </fieldset>
+  <div id="weightingText" style="display: none; padding-right: 0px;">
+    <p style="font-style: italic;">Was passiert, wenn Sie die Ergebnisse nach Befragtenmerkmalen gewichten, wie Alter, Geschlecht oder vergangenes Wahlverhalten?
+    </p>
+    <p>
+      Gewichtung bedeutet, dass bestimmte Gruppen in der Umfrage stärker oder schwächer berücksichtigt werden, um ein genaueres Bild der Bevölkerung zu zeichnen. Zum Beispiel könnten junge Menschen in der Umfrage unterrepräsentiert sein. In diesem Fall werden ihre Antworten stärker gewichtet, also in der Rechnung berücksichtigt. Das kann die Genauigkeit verbessern, aber auch Fehler verstärken, wenn die Gewichtung auf falschen Annahmen beruht. Für Wahlumfragen kann es besonders sinnvoll sein, vergangenes Wahlverhalten zu berücksichtigen, da es eine stabile Grundlage bietet, um die Neigung der Wählerinnen und Wähler einzuschätzen. </p>
+  </div>
 
   <div id="right">
     <div id="partyAdaption">
@@ -71,6 +88,12 @@
           </datalist></div>
       </div>
     </div>
+    <div id="biasText" style="display: none; padding-right: 0px;">
+      <p style="font-style: italic;">Was passiert, wenn Sie einer Partei einen Bonus oder Malus geben?
+
+      </p>
+      <p>
+        Manchmal nehmen Institute an, dass bestimmte Parteien in Umfragen systematisch schlechter oder besser abschneiden, als sie es bei der Wahl tun würden. Sie können dann bewusst das Ergebnis einer Partei anpassen. Ein Beispiel: Parteien mit jüngeren Wählern (die schwerer zu erreichen sind) könnten leicht aufgewertet werden. Solche Anpassungen können sinnvoll sein, wenn die Annahmen gut begründet sind. Wenn sie jedoch auf falschen Vermutungen basieren, können sie das Ergebnis verfälschen und das Vertrauen in die Umfrage mindern.</p>    </div>
   </div>
 
   <div style="padding-top: 10px; display: flex;justify-content: center;flex-wrap: wrap;" class="buttons"><button

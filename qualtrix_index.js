@@ -60,6 +60,12 @@ Qualtrics.SurveyEngine.addOnReady(function()
         const partyChooser = document.getElementById("partyBias");
         const biasSlider = document.getElementById("partyAdaptionValue");
 
+        /* EXPLANATORY TEXTS */
+        const sampleSizeText = document.getElementById("sampleSizeText");
+        const modeText = document.getElementById("modeText");
+        const weightingText = document.getElementById("weightingText");
+        const biasText = document.getElementById("biasText");
+
         // https://www.media-analyse.at/Signifikanz
         function errorTerm(absItem, sample_size) {
             absItem = Number(absItem);
@@ -252,7 +258,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     },
                     annotations: annotations,
                     dragmode: false,
-                    margin: {t: 10, l: 40, r: 40}
+                    margin: {t: 10, l: 40, r: 40, b: 0}
                 }, // layout
                 {
                     displayModeBar: false,
@@ -729,19 +735,63 @@ Qualtrics.SurveyEngine.addOnReady(function()
 
         /* INTERACTION LOGGING */
         function recordInteraction (elem) {
-            if (elem.srcElement == fh_radio) window.byop_data.size_changed += 1;
-            if (elem.srcElement == ot_radio) window.byop_data.size_changed += 1;
-            if (elem.srcElement == tt_radio) window.byop_data.size_changed += 1;
-            if (elem.srcElement == telephoneSample) window.byop_data.type_changed += 1;
-            if (elem.srcElement == socialMediaSample) window.byop_data.type_changed += 1;
-            if (elem.srcElement == onlineSample) window.byop_data.type_changed += 1;
-            if (elem.srcElement == redrawButton) window.byop_data.sample_changed += 1;
-            if (elem.srcElement == resetButton) window.byop_data.reset += 1;
-            if (elem.srcElement == demographicsCheckbox) window.byop_data.weighting_changed += 1;
-            if (elem.srcElement == voteCheckbox) window.byop_data.weighting_changed += 1;
-            if (elem.srcElement == noneCheckbox) window.byop_data.weighting_changed += 1;
-            if (elem.srcElement == biasSlider) window.byop_data.party_bias_changed += 1;
-            if (elem.srcElement = partyChooser)window.byop_data.biased_party_changed += 1;
+            const trigger = elem.srcElement;
+
+            if (trigger == fh_radio) window.byop_data.size_changed += 1;
+            if (trigger == ot_radio) window.byop_data.size_changed += 1;
+            if (trigger == tt_radio) window.byop_data.size_changed += 1;
+            if (trigger == fh_radio ||
+                trigger == ot_radio ||
+                trigger == tt_radio) {
+                    sampleSizeText.style.setProperty('display', 'unset');
+                    modeText.style.setProperty('display', 'none');
+                    weightingText.style.setProperty('display', 'none');
+                    biasText.style.setProperty('display', 'none');
+                }
+
+            if (trigger == telephoneSample) window.byop_data.type_changed += 1;
+            if (trigger == socialMediaSample) window.byop_data.type_changed += 1;
+            if (trigger == onlineSample) window.byop_data.type_changed += 1;
+            if (trigger == telephoneSample ||
+                trigger == socialMediaSample ||
+                trigger == onlineSample) {
+                    sampleSizeText.style.setProperty('display', 'none');
+                    modeText.style.setProperty('display', 'unset');
+                    weightingText.style.setProperty('display', 'none');
+                    biasText.style.setProperty('display', 'none');
+                }
+
+            if (trigger == redrawButton) window.byop_data.sample_changed += 1;
+            if (trigger == resetButton) window.byop_data.reset += 1;
+            if (trigger == noneCheckbox) window.byop_data.weighting_changed += 1;
+            if (trigger == redrawButton ||
+                trigger == resetButton ||
+                trigger == noneCheckbox) {
+                    sampleSizeText.style.setProperty('display', 'none');
+                    modeText.style.setProperty('display', 'none');
+                    weightingText.style.setProperty('display', 'none');
+                    biasText.style.setProperty('display', 'none');
+                }
+
+            if (trigger == demographicsCheckbox) window.byop_data.weighting_changed += 1;
+            if (trigger == voteCheckbox) window.byop_data.weighting_changed += 1;
+            if (trigger == demographicsCheckbox ||
+                trigger == voteCheckbox) {
+                    sampleSizeText.style.setProperty('display', 'none');
+                    modeText.style.setProperty('display', 'none');
+                    weightingText.style.setProperty('display', 'unset');
+                    biasText.style.setProperty('display', 'none');
+                }
+
+            if (trigger == biasSlider) window.byop_data.party_bias_changed += 1;
+            if (trigger == partyChooser)window.byop_data.biased_party_changed += 1;
+            if (trigger == biasSlider ||
+                trigger == partyChooser) {
+                    sampleSizeText.style.setProperty('display', 'none');
+                    modeText.style.setProperty('display', 'none');
+                    weightingText.style.setProperty('display', 'none');
+                    biasText.style.setProperty('display', 'unset');
+                }
         }
 
         fh_radio.addEventListener('click', recordInteraction);
