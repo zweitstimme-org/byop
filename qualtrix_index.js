@@ -31,7 +31,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
 			let holderHeight = Math.round(holderWidth / 1.428);
 		  if (holderHeight < 250) holderHeight = 250;
 		        const redrawButton = document.getElementById("redraw");
-        const resetButton = document.getElementById("reset");
+        const resetButton = document.getElementById("resetByop");
 
         /* SAMPLE SIZE */
         const fh_radio = document.getElementById("500")
@@ -192,7 +192,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     showarrow: false
                 }
             )
-
+			
             Plotly.newPlot("holder", // elem
                 [
                     { /* BACKGROUND BARS */
