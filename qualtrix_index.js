@@ -753,7 +753,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
             if (trigger == fh_radio ||
                 trigger == ot_radio ||
                 trigger == tt_radio) {
-                    sampleSizeText.style.setProperty('display', 'unset');
+                    sampleSizeText.style.setProperty('display', 'block');
                     modeText.style.setProperty('display', 'none');
                     weightingText.style.setProperty('display', 'none');
                     biasText.style.setProperty('display', 'none');
@@ -766,7 +766,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 trigger == socialMediaSample ||
                 trigger == onlineSample) {
                     sampleSizeText.style.setProperty('display', 'none');
-                    modeText.style.setProperty('display', 'unset');
+                    modeText.style.setProperty('display', 'block');
                     weightingText.style.setProperty('display', 'none');
                     biasText.style.setProperty('display', 'none');
                 }
@@ -789,7 +789,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 trigger == voteCheckbox) {
                     sampleSizeText.style.setProperty('display', 'none');
                     modeText.style.setProperty('display', 'none');
-                    weightingText.style.setProperty('display', 'unset');
+                    weightingText.style.setProperty('display', 'block');
                     biasText.style.setProperty('display', 'none');
                 }
 
@@ -800,7 +800,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     sampleSizeText.style.setProperty('display', 'none');
                     modeText.style.setProperty('display', 'none');
                     weightingText.style.setProperty('display', 'none');
-                    biasText.style.setProperty('display', 'unset');
+                    biasText.style.setProperty('display', 'block');
                 }
         }
 
