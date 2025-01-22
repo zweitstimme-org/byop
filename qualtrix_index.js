@@ -25,6 +25,11 @@ Qualtrics.SurveyEngine.addOnReady(function()
 	jQuery.getScript("https://cdn.plot.ly/plotly-3.0.0-rc.2.min.js", () => {
 	  jQuery.getJSON("https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json", (d) => {
 					data = d;
+		  const holderElem = document.getElementById('holder');
+			let holderWidth = Math.round(holderElem.clientWidth - 20);
+            if (holderWidth > 600) holderWidth = 600;
+			let holderHeight = Math.round(holderWidth / 1.428);
+		  if (holderHeight < 250) holderHeight = 250;
 		        const redrawButton = document.getElementById("redraw");
         const resetButton = document.getElementById("reset");
 
@@ -147,6 +152,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         showarrow: false,
                         font: {
                             color: sign == "+" ? 'green' : (sign == "±" ? 'black' : 'red'),
+                            size: holderWidth >= 440 ? 12 : 8
                         }
                     }
                 } );
@@ -163,7 +169,10 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         yref: 'y',
                         text: performanceTexts[i],
                         align: 'center',
-                        showarrow: false
+                        showarrow: false,
+                        font: {
+                            size: holderWidth >= 440 ? 12 : 8
+                        }
                     }
                 )
             }
@@ -176,6 +185,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     xref: 'paper',
                     yref: 'y',
                     text: 'Abweichung vom Durchschnitt anderer Umfragen:',
+                    font: {
+                        size: holderWidth >= 440 ? 12 : 8
+                    },
                     align: 'center',
                     showarrow: false
                 }
@@ -229,8 +241,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     }                    
                 ], // data
                 {
-                    "width": 500,
-                    "height": 350,
+                    width: holderWidth,
+                    height: holderHeight,
                     showlegend: false,
                     barmode: 'overlay',
                     yaxis: {
@@ -240,9 +252,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     },
                     annotations: annotations,
                     dragmode: false,
-                    title: {
-                        text: "Wenn am nächsten Sonntag Bundestagswahl wäre..."
-                    }
+                    margin: {t: 10, l: 40, r: 40}
                 }, // layout
                 {
                     displayModeBar: false,
