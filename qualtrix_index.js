@@ -33,7 +33,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
         return colorWithOpa;
     };
 	jQuery.getScript("https://cdn.plot.ly/plotly-3.0.0-rc.2.min.js", () => {
-	  jQuery.getJSON("https://raw.githack.com/zweitstimme-org/byop/main/sample_data.json", (d) => {
+	  jQuery.getJSON("https://rawcdn.githack.com/zweitstimme-org/byop/d00952b6c3db6ce83862c7d6bfdec15fefca74e1/sample_data.json", (d) => {
 					data = d;
 		  const holderElem = document.getElementById('holder');
 			let holderWidth = Math.round(holderElem.clientWidth - 20);
