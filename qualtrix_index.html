@@ -7,7 +7,7 @@
 
 <div id="controls" class="container">
   <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
-    <legend>Stichprobengröße:</legend>
+    <legend>Anzahl Befragte:</legend>
 
     <div><input value="500" type="radio" name="samplesize" id="500"> <label for="500">500</label></div>
 
@@ -17,32 +17,30 @@
     <div><input value="10000" type="radio" name="samplesize" id="10000"> <label for="10000">10.000</label></div>
   </fieldset>
   <div id="sampleSizeText" style="text-align: justify; display: none; padding-right: 0px; font-size: 14px; box-sizing: border-box; background-color: #e6e6e6; padding: 5px; margin-top: 5px; border-radius: 5px;">
-    <p style="font-weight: bold;">Was passiert, wenn Sie eine kleine (500), mittlere (1000) oder große Anzahl von Personen befragen?</p>
+    <p style="font-weight: bold;">Was passiert, wenn Sie eine kleine (500), mittlere (1.000) oder große Anzahl (10.000) von Personen befragen?</p>
     <p>
-Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3000 Personen. Je mehr Personen befragt werden, desto weniger schwankt das Ergebnis zufällig. Institute geben häufig eine "Fehlertoleranz" von beispielsweise 3% an. Damit versuchen sie auszudrücken, dass die wahre Unterstützung für eine Partei in der Grundgesamtheit mit hoher Wahrscheinlichkeit im Umfang von maximal +/- 3% vom Umfrageergebnis abweicht. Das ist jedoch stark vereinfacht, weil trotzdem noch systematische Fehler entstehen können (siehe bei "Rekrutierungsmethode").
+Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1.000 und 3.000 Personen.<br> Je mehr Personen befragt werden, desto weniger schwankt das Ergebnis zufällig.<br> Institute geben häufig eine "Fehlertoleranz" von beispielsweise 3% an. Damit versuchen sie auszudrücken, dass die wahre Unterstützung für eine Partei in der Wählerschaft mit hoher Wahrscheinlichkeit im Umfang von maximal +/- 3% vom Umfrageergebnis abweicht.<br> Das ist jedoch stark vereinfacht, weil trotzdem noch systematische Fehler entstehen können (siehe bei "Rekrutierungsmethode").
     </p>
   </div>
 
   <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
     <legend>Rekrutierungsmethode:</legend>
 
-    <div><input value="sm" type="radio" name="sampletype" id="socialMedia"> <label for="socialMedia">Social Media
-        Werbung</label></div>
+    <div><input value="sm" type="radio" name="sampletype" id="socialMedia"> <label for="socialMedia">Social Media Nutzende</label></div>
 
     <div><input value="on" type="radio" name="sampletype" id="online" checked="checked"> <label for="online">Online über
         Marktforschungsinstitut</label></div>
 
-    <div><input value="tel" type="radio" name="sampletype" id="tel"> <label for="tel">Zufällige Stichprobe via Telefon
-        und Handy</label></div>
+    <div><input value="tel" type="radio" name="sampletype" id="tel"> <label for="tel">Zufällige Anrufe über Festnetz und Handy</label></div>
   </fieldset>
   <div id="modeText" style="text-align: justify; display: none; padding-right: 0px; font-size: 14px; box-sizing: border-box; background-color: #e6e6e6; padding: 5px; margin-top: 5px; border-radius: 5px;">
     <p style="font-weight: bold;">Was passiert, wenn Sie Befragte über Social-Media-Werbung, ein Online-Panel eines Marktforschungsinstituts oder eine telefonische Befragung zufällig ausgewählter Personen auswählen?</p>
     <p>
-      Die Methode, wie Befragte ausgewählt werden, kann das Ergebnis stark beeinflussen. Personen, die über Social-Media-Werbung erreicht werden, sind oft jünger und politisch interessierter. Je nach Werbung und Plattform können auch vor allem Sympathisanten bestimmter Parteien angesprochen werden. Online-Panels enthalten oft Menschen, die regelmäßig an Umfragen teilnehmen, was ebenfalls nicht dem Querschnitt der Wählerschaft entspricht. Befragungen zufällig ausgewählter Personen beispielsweise über zufällig gewählte Telefonnummern gelten als repräsentativer, erreichen aber oft weniger junge Menschen oder Berufstätige mit weniger Zeit.    </p>
+      Die Methode, wie Befragte ausgewählt werden, kann das Ergebnis stark beeinflussen.<br> Personen, die über <b>Social Media</b> erreicht werden, sind oft jünger und politisch interessierter. Je nach Werbung und Plattform können auch vor allem Sympathisanten bestimmter Parteien angesprochen werden.<br> Online-Panels von <b>Marktforschungsinstituten</b> enthalten oft Menschen, die regelmäßig an Umfragen teilnehmen, was ebenfalls nicht dem Querschnitt der Wählerschaft entspricht.<br> Befragungen zufällig ausgewählter Personen, beispielsweise über <b>zufällig gewählte Telefonnummern</b>, gelten als repräsentativer, erreichen aber oft weniger junge Menschen oder Berufstätige mit weniger Zeit.</p>
   </div>
 
   <fieldset style="display: flex;flex-direction: row;flex-wrap: wrap;">
-    <legend>Gewichtung:</legend>
+    <legend>Gewichtung (Mehrfachauswahl möglich):</legend>
 
     <div><input value="none" type="checkbox" id="none" checked="true"> <label for="none">Keine</label></div>
 
@@ -55,7 +53,7 @@ Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3
     <p style="font-weight: bold;">Was passiert, wenn Sie die Ergebnisse nach Befragtenmerkmalen gewichten, wie Alter, Geschlecht oder vergangenes Wahlverhalten?
     </p>
     <p>
-      Gewichtung bedeutet, dass bestimmte Gruppen in der Umfrage stärker oder schwächer berücksichtigt werden, um ein genaueres Bild der Bevölkerung zu zeichnen. Zum Beispiel könnten junge Menschen in der Umfrage unterrepräsentiert sein. In diesem Fall werden ihre Antworten stärker gewichtet, also in der Rechnung berücksichtigt. Das kann die Genauigkeit verbessern, aber auch Fehler verstärken, wenn die Gewichtung auf falschen Annahmen beruht. Für Wahlumfragen kann es besonders sinnvoll sein, vergangenes Wahlverhalten zu berücksichtigen, da es eine stabile Grundlage bietet, um die Neigung der Wählerinnen und Wähler einzuschätzen. </p>
+      Gewichtung bedeutet, dass bestimmte Gruppen in der Umfrage stärker oder schwächer berücksichtigt werden, um ein genaueres Bild der Bevölkerung zu zeichnen.<br> Zum Beispiel könnten junge Menschen in der Umfrage unterrepräsentiert sein. In diesem Fall werden ihre Antworten stärker gewichtet, also in der Rechnung berücksichtigt.<br> Das kann die Genauigkeit verbessern, aber auch Fehler verstärken, wenn die Gewichtung auf falschen Annahmen beruht.<br> Für Wahlumfragen kann es besonders sinnvoll sein, <b>vergangenes Wahlverhalten</b> zu berücksichtigen, da es eine stabile Grundlage bietet, um die Neigung der Wählerinnen und Wähler einzuschätzen. </p>
   </div>
 
   <div id="right" style="margin-top: 10px;">
@@ -100,6 +98,6 @@ Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3
   </div>
 
   <div style="padding-top: 10px; display: flex;justify-content: center;flex-wrap: wrap;" class="buttons"><button
-      style="margin: 10px;" id="redraw">Neue Stichprobe ziehen</button><button style="margin: 10px;"
+      style="margin: 10px;" id="redraw">Neue Umfrage durchführen</button><button style="margin: 10px;"
       id="resetByop">Einstellungen zurücksetzen</button></div>
 </div>
