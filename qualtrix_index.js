@@ -1,25 +1,32 @@
-let data;
-let rawSample = [];
-let weighedSample = {};
-let biasedSample = {};
-let drawnSamples = {};
-let sampleWeights = null;
-let foundEmbeddedData = null;
-
-window.byop_data = {
-    size_changed: 0,
-    type_changed: 0,
-    weighting_changed: 0,
-    biased_party_changed: [],
-    party_bias_changed: 0,
-    sample_changed: 0,
-    reset: 0,
-    poll_results: new Set()
-}
-
 Qualtrics.SurveyEngine.addOnReady(function()
 {
+    let data;
+    let rawSample = [];
+    let weighedSample = {};
+    let biasedSample = {};
+    let drawnSamples = {};
+    let sampleWeights = null;
+    let foundEmbeddedData = null;
+    const byop_data = {
+        size_changed: 0,
+        type_changed: 0,
+        weighting_changed: 0,
+        biased_party_changed: [],
+        party_bias_changed: 0,
+        sample_changed: 0,
+        reset: 0,
+        poll_results: new Set()
+    }
     foundEmbeddedData = Qualtrics.SurveyEngine.getEmbeddedData('dashboard_experiment_data');
+    
+    function saveBehavioralData(){
+        const setString = JSON.stringify([...byop_data.poll_results]);
+        const dataString = JSON.stringify(byop_data);
+        let dataToEmbed = dataString + setString;
+        if (foundEmbeddedData) dataToEmbed = foundEmbeddedData + dataToEmbed
+        Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_data', dataToEmbed);
+    }
+
     const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
 	const setOpacity = (hex, alpha) => {
         const colorWithOpa = String(hex)+Math.floor(alpha * 255).toString(16).padStart(2, 0);
@@ -102,8 +109,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 Math.round((biasedSample["BSW"]/SAMPLE_SIZE)*100),
                 Math.round((biasedSample["Sonstige"]/SAMPLE_SIZE)*100)
             ];
-            window.byop_data.poll_results.add(JSON.stringify(yValues));
-
+            byop_data.poll_results.add(JSON.stringify(yValues));
+            saveBehavioralData()
             const errorTerms = [
                 errorTerm(biasedSample["CDU/CSU"], SAMPLE_SIZE),
                 errorTerm(biasedSample["SPD"], SAMPLE_SIZE),
@@ -750,9 +757,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
         function recordInteraction (elem) {
             const trigger = elem.srcElement;
 
-            if (trigger == fh_radio) window.byop_data.size_changed += 1;
-            if (trigger == ot_radio) window.byop_data.size_changed += 1;
-            if (trigger == tt_radio) window.byop_data.size_changed += 1;
+            if (trigger == fh_radio) byop_data.size_changed += 1;
+            if (trigger == ot_radio) byop_data.size_changed += 1;
+            if (trigger == tt_radio) byop_data.size_changed += 1;
             if (trigger == fh_radio ||
                 trigger == ot_radio ||
                 trigger == tt_radio) {
@@ -762,9 +769,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     biasText.style.setProperty('display', 'none');
                 }
 
-            if (trigger == telephoneSample) window.byop_data.type_changed += 1;
-            if (trigger == socialMediaSample) window.byop_data.type_changed += 1;
-            if (trigger == onlineSample) window.byop_data.type_changed += 1;
+            if (trigger == telephoneSample) byop_data.type_changed += 1;
+            if (trigger == socialMediaSample) byop_data.type_changed += 1;
+            if (trigger == onlineSample) byop_data.type_changed += 1;
             if (trigger == telephoneSample ||
                 trigger == socialMediaSample ||
                 trigger == onlineSample) {
@@ -774,9 +781,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     biasText.style.setProperty('display', 'none');
                 }
 
-            if (trigger == redrawButton) window.byop_data.sample_changed += 1;
-            if (trigger == resetButton) window.byop_data.reset += 1;
-            if (trigger == noneCheckbox) window.byop_data.weighting_changed += 1;
+            if (trigger == redrawButton) byop_data.sample_changed += 1;
+            if (trigger == resetButton) byop_data.reset += 1;
+            if (trigger == noneCheckbox) byop_data.weighting_changed += 1;
             if (trigger == redrawButton ||
                 trigger == resetButton ||
                 trigger == noneCheckbox) {
@@ -786,8 +793,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     biasText.style.setProperty('display', 'none');
                 }
 
-            if (trigger == demographicsCheckbox) window.byop_data.weighting_changed += 1;
-            if (trigger == voteCheckbox) window.byop_data.weighting_changed += 1;
+            if (trigger == demographicsCheckbox) byop_data.weighting_changed += 1;
+            if (trigger == voteCheckbox) byop_data.weighting_changed += 1;
             if (trigger == demographicsCheckbox ||
                 trigger == voteCheckbox) {
                     sampleSizeText.style.setProperty('display', 'none');
@@ -796,8 +803,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     biasText.style.setProperty('display', 'none');
                 }
 
-            if (trigger == biasSlider) window.byop_data.party_bias_changed += 1;
-            if (trigger == partyChooser)window.byop_data.biased_party_changed.push(partyChooser.value);
+            if (trigger == biasSlider) byop_data.party_bias_changed += 1;
+            if (trigger == partyChooser)byop_data.biased_party_changed.push(partyChooser.value);
             if (trigger == biasSlider ||
                 trigger == partyChooser) {
                     sampleSizeText.style.setProperty('display', 'none');
@@ -805,6 +812,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     weightingText.style.setProperty('display', 'none');
                     biasText.style.setProperty('display', 'block');
                 }
+            saveBehavioralData()
         }
 
         fh_radio.addEventListener('click', recordInteraction);
@@ -825,13 +833,3 @@ Qualtrics.SurveyEngine.addOnReady(function()
         redraw(); 
       })
 });})       
-
-Qualtrics.SurveyEngine.addOnPageSubmit(function()
-{
-    const setString = JSON.stringify([...window.byop_data.poll_results]);
-    delete window.byop_data.poll_results;
-    const dataString = JSON.stringify(window.byop_data);
-    let dataToEmbed = dataString + setString;
-    if (foundEmbeddedData) dataToEmbed = foundEmbeddedData + dataToEmbed
-    Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_data', dataToEmbed);
-});
