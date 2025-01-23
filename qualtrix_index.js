@@ -10,7 +10,7 @@ window.byop_data = {
     size_changed: 0,
     type_changed: 0,
     weighting_changed: 0,
-    biased_party_changed: 0,
+    biased_party_changed: [],
     party_bias_changed: 0,
     sample_changed: 0,
     reset: 0,
@@ -623,7 +623,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
             const effectSize = Number(biasSlider.value);
             
             // Do nothing if we do not introduce bias
-            if (effectSize == 0) {
+            if (effectSize == 0 || party == "none") {
                 biasedSample = jQuery.extend(true, {}, weighedSample);
                 updateBarChart();
                 return;
@@ -656,6 +656,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
         }
 
         function resetBias() {
+            if (partyChooser.value == "none") biasSlider.toggleAttribute("disabled", true)
+            else biasSlider.toggleAttribute("disabled", false) 
             biasSlider.value = 0;
             adaptForParty();               
         }
@@ -719,8 +721,9 @@ Qualtrics.SurveyEngine.addOnReady(function()
             demographicsCheckbox.checked = false;
             voteCheckbox.checked = false;
             noneCheckbox.checked = true;
-            partyChooser.value = "CDU/CSU";
+            partyChooser.value = "none";
             biasSlider.value = 0;
+            biasSlider.toggleAttribute("disabled", true);
             switchSample();
         }
 
@@ -794,7 +797,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                 }
 
             if (trigger == biasSlider) window.byop_data.party_bias_changed += 1;
-            if (trigger == partyChooser)window.byop_data.biased_party_changed += 1;
+            if (trigger == partyChooser)window.byop_data.biased_party_changed.push(partyChooser.value);
             if (trigger == biasSlider ||
                 trigger == partyChooser) {
                     sampleSizeText.style.setProperty('display', 'none');

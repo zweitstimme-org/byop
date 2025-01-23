@@ -64,6 +64,7 @@ Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3
 
       <div style="display: flex;flex-wrap: wrap;"><select style="border-width: 1px; height: 25px;" name="partyBias"
           id="partyBias">
+          <option value="none" selected="selected">Partei wählen</option>
           <option value="CDU/CSU">CDU/CSU</option>
           <option value="SPD">SPD</option>
           <option value="AfD">AfD</option>
@@ -75,7 +76,7 @@ Die meisten Umfrageinstitute befragen für die Sonntagsfrage zwischen 1000 und 3
         </select>
 
         <div><input type="range" step="1" name="partyAdaptionValue" min="-5" max="5" list="tickmarks"
-            id="partyAdaptionValue"> <datalist id="tickmarks">
+            id="partyAdaptionValue" disabled> <datalist id="tickmarks">
             <option value="-5" style="padding-top: 0px;" label="≈-5%"></option>
             <option value="-4"></option>
             <option value="-3"></option>
