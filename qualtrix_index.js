@@ -211,14 +211,14 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         y: pollingAverage,
                         marker: { // custom party colors
                             color: [
-                                setOpacity("#000000", 0.4),
-                                setOpacity("#ff0000", 0.4),
-                                setOpacity("#0000ff", 0.4),
-                                setOpacity("#008000", 0.4),
-                                setOpacity("#ffff00", 0.4),
-                                setOpacity("#ff00ff", 0.4),
-                                setOpacity("#7b2450", 0.4),
-                                setOpacity("#c0c0c0", 0.4),
+                                setOpacity("#000000", 0.4), // CDU
+                                setOpacity("#E3000F", 0.4), // SPD
+                                setOpacity("#009EE0", 0.4), // AfD
+                                setOpacity("#46962B", 0.4), // B90
+                                setOpacity("#FFED00", 0.4), // FDP
+                                setOpacity("#C13197", 0.4), // LINKE
+                                setOpacity("#8037DE", 0.4), // BSW
+                                setOpacity("#A9A9A9", 0.4), // Sonstige
                             ]
                         },
                         type: "bar",
@@ -231,14 +231,14 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         customdata: intervals,
                         marker: { // custom party colors
                             color: [
-                                "#000000",
-                                "#ff0000",
-                                "#0000ff",
-                                "#008000",
-                                "#ffff00",
-                                "#ff00ff",
-                                "#7b2450",
-                                "#c0c0c0"
+                                "#000000", // CDU 
+                                "#E3000F", // SPD
+                                "#009EE0", // AfD
+                                "#46962B", // B90
+                                "#FFED00", // FDP
+                                "#C13197", // LINKE
+                                "#8037DE", // BSW
+                                "#A9A9A9" // Sonstige
                             ]
                         },
                         error_y: { // error bars
