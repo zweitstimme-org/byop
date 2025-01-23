@@ -163,7 +163,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         showarrow: false,
                         font: {
                             color: sign == "+" ? 'green' : (sign == "±" ? 'black' : 'red'),
-                            size: holderWidth >= 440 ? 12 : 8
+                            size: holderWidth >= 440 ? 14 : 9
                         }
                     }
                 } );
@@ -182,7 +182,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                         align: 'center',
                         showarrow: false,
                         font: {
-                            size: holderWidth >= 440 ? 12 : 8
+                            size: holderWidth >= 440 ? 14 : 9
                         }
                     }
                 )
@@ -197,7 +197,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
                     yref: 'y',
                     text: 'Abweichung vom Durchschnitt anderer Umfragen:',
                     font: {
-                        size: holderWidth >= 440 ? 12 : 8
+                        size: holderWidth >= 440 ? 14 : 10
                     },
                     align: 'center',
                     showarrow: false
