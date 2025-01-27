@@ -17,14 +17,14 @@ Qualtrics.SurveyEngine.addOnReady(function()
         reset: 0,
         poll_results: new Set()
     }
-    foundEmbeddedData = Qualtrics.SurveyEngine.getEmbeddedData('dashboard_experiment_data');
+    foundEmbeddedData = Qualtrics.SurveyEngine.getEmbeddedData('dashboard_experiment_output');
     
     function saveBehavioralData(){
         const setString = JSON.stringify([...byop_data.poll_results]);
         const dataString = JSON.stringify(byop_data);
         let dataToEmbed = dataString + setString;
         if (foundEmbeddedData) dataToEmbed = foundEmbeddedData + dataToEmbed
-        Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_data', dataToEmbed);
+        Qualtrics.SurveyEngine.setEmbeddedData('dashboard_experiment_output', dataToEmbed);
     }
 
     const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
